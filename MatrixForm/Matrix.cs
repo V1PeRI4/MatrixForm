@@ -13,8 +13,20 @@ namespace MatrixForm
         public int Column { get; set; }
         public int[,] Mass { get; set; }
 
+
+        public int GetRowCount()
+        {
+            return Row;
+        }
+        public int GetColumnCount()
+        {
+            return Column;
+        }
+
         public Matrix(int row, int column)
         {
+            Row = row;
+            Column = column;
             Mass = new int[row, column];
         }
 

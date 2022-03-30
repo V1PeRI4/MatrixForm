@@ -23,6 +23,9 @@ namespace MatrixForm
             InitSizeGridView(dataGridView1, 50, 20);
             InitSizeGridView(dataGridView2, 50, 20);
             InitSizeGridView(dataGridView3, 50, 20);
+
+            int _row = matrix.GetRowCount();
+            
         }
 
         private void InitSizeGridView(DataGridView dataGrid, int width, int height)
@@ -31,7 +34,9 @@ namespace MatrixForm
             {
                 for (int j = 0; j < dataGrid.ColumnCount; j++)
                 {
+
                     dataGrid.Columns[j].Width = width;
+                    
                 }
             }
             
@@ -53,13 +58,19 @@ namespace MatrixForm
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    /*matrix[i, j] = int.Parse(dataGridView1.Rows[2]);*/
+                    matrix.Mass[i, j] = (int)dataGridView1[i, j].Value;
+                    //matrix[i, j] = int.Parse(dataGridView1.Rows[2]);
                 }
                 
             }
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
