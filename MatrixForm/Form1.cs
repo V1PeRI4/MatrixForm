@@ -12,13 +12,11 @@ namespace MatrixForm
 {
     public partial class Form1 : Form
     {
+        private int _matrixColumns, _matrixRows;
+        private bool _safe;
         public Form1()
         {
             InitializeComponent();
-
-            Matrix matrix = new Matrix(3, 3);
-            Matrix matrix2 = new Matrix(3, 3);
-            Matrix resultMatrix = new Matrix(3, 3);
 
             InitSizeGridView(dataGridView1, 50, 20);
             InitSizeGridView(dataGridView2, 50, 20);
@@ -53,15 +51,50 @@ namespace MatrixForm
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    /*matrix[i, j] = int.Parse(dataGridView1.Rows[2]);*/
+                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView1[i,j].Value);
                 }
-                
             }
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (_safe)
+            {
+                Matrix matrix = new Matrix(_matrixRows, _matrixColumns);
+                Matrix matrix2 = new Matrix(_matrixRows, _matrixColumns);
+                Matrix resultMatrix = new Matrix(_matrixRows, _matrixColumns);
+            }
+        }
+
+        private void initColumnsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            InitMatrixSize(initColumnsTextBox, ref _matrixColumns);
+        }
+
+        private void initRowsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            InitMatrixSize(initRowsTextBox, ref _matrixRows);
+        }
+
+        private bool InitMatrixSize(TextBox textBox, ref int value)
+        {
+            _safe = true;
+
+            try
+            {
+                value = int.Parse(textBox.Text);
+            }
+            catch (FormatException)
+            {
+                _safe = false;
+            }
+
+            return _safe;
         }
     }
 }
