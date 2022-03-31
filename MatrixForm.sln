@@ -5,9 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixForm", "MatrixForm\MatrixForm.csproj", "{E0C8FF9D-9C5E-4A70-BFA1-BFFE9C9F485A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{376EA3F9-B44C-4E41-ADC2-3149B5F2D639}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{8AD5AB94-4094-43AB-8774-F4A91CED9210}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{8AD5AB94-4094-43AB-8774-F4A91CED9210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
