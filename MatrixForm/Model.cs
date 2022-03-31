@@ -76,8 +76,6 @@ namespace MatrixForm
         /// Нахождение обратной матрицы
         /// </summary>
         /// 
-
-       
         public void ReverseMatrix(Matrix matrix1)
         {
             if (matrix1.ColumnCount != matrix1.RowCount)
@@ -94,11 +92,17 @@ namespace MatrixForm
                 return;
             }
 
-            Matrix resultMatrix = new Matrix(N, N);
+            Matrix alliedMatrix = new Matrix(N, N);
 
-            //ProcessFunctionOverData(  (i, j)   =>  {result[i, j] = ((i + j) % 2 == 1 ? -1 : 1) * CalculateMinor(i, j) / determinant;}  );
+            AlliedMatrix(alliedMatrix, N);
+
+
+            Matrix resultMatrix = alliedMatrix;
 
             resultMatrix = CreateTransposeMatrix(resultMatrix, N);
+
+
+            resultMatrix = 
 
             //resultMatrix = (1 / determinant) * resultMatrix; Последнее действие
 
@@ -123,19 +127,8 @@ namespace MatrixForm
             return (determinant);
         }
 
-        //public void ProcessFunctionOverData(Action<int, int> func)
-        //{
-        //    for (var i = 0; i < this.M; i++)
-        //    {
-        //        for (var j = 0; j < this.N; j++)
-        //        {
-        //            func(i, j);
-        //        }
-        //    }
-        //}
 
-
-        public Matrix AlliedMatrix(Matrix matrix1, int N)
+        public void AlliedMatrix(Matrix matrix1, int N)
         {
             float algebraicAdd = 0;
 
@@ -143,19 +136,23 @@ namespace MatrixForm
 
             if (N != 2)
             {
+
                 for (int i = 0; i < N; i++)
                 {
-                    if (i % 2 == 0) algebraicAdd += matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
-                    else algebraicAdd -= matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
+                    for (int j = 0; j < N; j++)
+                    {
+                        if (i % 2 == 0) algebraicAdd += matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
+                        else algebraicAdd -= matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
 
-                    alliedMatrix.Mass[]
+                        alliedMatrix.Mass[i, j] = algebraicAdd;
+                    }
                 }
+                    
             }
             else if (N == 2)
             {
                 algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
             }
-            return (algebraicAdd);
         }
 
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
