@@ -50,13 +50,13 @@ namespace MatrixForm
         }
 
         //Заполнение DataGridView массивом
-        private void FillDataGridView(Matrix matrix, DataGridView dataGridView)
+        private void FillDataGridView(Matrix matrix)
         {
             for (int i = 0; i < matrix.Mass.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    dataGridView[i, j].Value = matrix.Mass[i, j];
+                    dataGridView3[i, j].Value = matrix.Mass[i, j];
                 }
             }
         }
