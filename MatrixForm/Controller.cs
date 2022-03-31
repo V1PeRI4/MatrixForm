@@ -8,5 +8,14 @@ namespace MatrixForm
 {
     internal class Controller
     {
+        delegate void ControllerHndl(int result);
+        event ControllerHndl CtrlEvent;
+
+        public Controller(Model model)
+        {
+            Model = model;
+        }
+
+        Model Model { get; set; }
     }
 }

@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,9 +49,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelFillMatrixPls = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -69,7 +70,7 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 17);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -78,6 +79,25 @@
             this.dataGridView1.Visible = false;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 50;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Column2";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 50;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Column3";
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 50;
             // 
             // dataGridView2
             // 
@@ -91,11 +111,11 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3});
-            this.dataGridView2.Location = new System.Drawing.Point(449, 12);
+            this.dataGridView2.Location = new System.Drawing.Point(449, 17);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(281, 194);
+            this.dataGridView2.Size = new System.Drawing.Size(305, 194);
             this.dataGridView2.TabIndex = 1;
             this.dataGridView2.Visible = false;
             this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
@@ -127,11 +147,11 @@
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
             this.dataGridViewTextBoxColumn6});
-            this.dataGridView3.Location = new System.Drawing.Point(449, 231);
+            this.dataGridView3.Location = new System.Drawing.Point(449, 236);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView3.Size = new System.Drawing.Size(281, 203);
+            this.dataGridView3.Size = new System.Drawing.Size(305, 203);
             this.dataGridView3.TabIndex = 2;
             this.dataGridView3.Visible = false;
             // 
@@ -152,7 +172,7 @@
             // 
             // matrixInverseButton
             // 
-            this.matrixInverseButton.Location = new System.Drawing.Point(363, 20);
+            this.matrixInverseButton.Location = new System.Drawing.Point(363, 25);
             this.matrixInverseButton.Name = "matrixInverseButton";
             this.matrixInverseButton.Size = new System.Drawing.Size(75, 23);
             this.matrixInverseButton.TabIndex = 3;
@@ -163,7 +183,7 @@
             // 
             // matrixMultyButton
             // 
-            this.matrixMultyButton.Location = new System.Drawing.Point(363, 49);
+            this.matrixMultyButton.Location = new System.Drawing.Point(363, 54);
             this.matrixMultyButton.Name = "matrixMultyButton";
             this.matrixMultyButton.Size = new System.Drawing.Size(75, 23);
             this.matrixMultyButton.TabIndex = 4;
@@ -174,7 +194,7 @@
             // 
             // initColumnsTextBox
             // 
-            this.initColumnsTextBox.Location = new System.Drawing.Point(72, 392);
+            this.initColumnsTextBox.Location = new System.Drawing.Point(72, 397);
             this.initColumnsTextBox.Name = "initColumnsTextBox";
             this.initColumnsTextBox.Size = new System.Drawing.Size(75, 20);
             this.initColumnsTextBox.TabIndex = 5;
@@ -182,7 +202,7 @@
             // 
             // initRowsTextBox
             // 
-            this.initRowsTextBox.Location = new System.Drawing.Point(72, 418);
+            this.initRowsTextBox.Location = new System.Drawing.Point(72, 423);
             this.initRowsTextBox.Name = "initRowsTextBox";
             this.initRowsTextBox.Size = new System.Drawing.Size(75, 20);
             this.initRowsTextBox.TabIndex = 6;
@@ -190,7 +210,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(72, 363);
+            this.button3.Location = new System.Drawing.Point(72, 368);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 7;
@@ -201,7 +221,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 395);
+            this.label1.Location = new System.Drawing.Point(13, 400);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 8;
@@ -210,7 +230,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 421);
+            this.label2.Location = new System.Drawing.Point(13, 426);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 9;
@@ -219,7 +239,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(153, 368);
+            this.label3.Location = new System.Drawing.Point(153, 373);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 13);
             this.label3.TabIndex = 10;
@@ -229,37 +249,29 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(446, 215);
+            this.label4.Location = new System.Drawing.Point(446, 220);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(140, 13);
             this.label4.TabIndex = 11;
             this.label4.Text = "Результирующая матрица";
             this.label4.Visible = false;
             // 
-            // Column1
+            // labelFillMatrixPls
             // 
-            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 50;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 50;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Column3";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 50;
+            this.labelFillMatrixPls.AutoSize = true;
+            this.labelFillMatrixPls.Location = new System.Drawing.Point(346, 1);
+            this.labelFillMatrixPls.Name = "labelFillMatrixPls";
+            this.labelFillMatrixPls.Size = new System.Drawing.Size(109, 13);
+            this.labelFillMatrixPls.TabIndex = 12;
+            this.labelFillMatrixPls.Text = "Заполните матрицу!";
+            this.labelFillMatrixPls.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.labelFillMatrixPls);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -306,6 +318,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.Label labelFillMatrixPls;
     }
 }
 

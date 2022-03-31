@@ -1,6 +1,7 @@
 ﻿/*TODO
  Авторазмер окон GridView +
  Реализация MVC -
+ Дописать кнопки
  */
 
 using System;
@@ -17,15 +18,21 @@ namespace MatrixForm
 {
     public partial class Form1 : Form
     {
-        Matrix matrix;
-        Matrix matrix2;
-        Matrix resultMatrix;
+        Matrix _matrix;
+        Matrix _matrix2;
+        Matrix _resultMatrix;
+
+        Controller _controller;
 
         private int _matrixColumns, _matrixRows;
         private bool _safe; 
         public Form1()
         {
             InitializeComponent();
+
+            Model model = new Model();
+
+            _controller = new Controller(model);
         }
 
         /*-----------------------ТЕХНИЧЕСКИЙ БЛОК--------------------------*/
@@ -38,6 +45,18 @@ namespace MatrixForm
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
                     matrix.Mass[i, j] = Convert.ToInt32(dataGridView[i,j].Value);
+                }
+            }
+        }
+
+        //Заполнение DataGridView массивом
+        private void FillDataGridView(Matrix matrix, DataGridView dataGridView)
+        {
+            for (int i = 0; i < matrix.Mass.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.Mass.GetLength(1); j++)
+                {
+                    dataGridView[i, j].Value = matrix.Mass[i, j];
                 }
             }
         }
@@ -68,6 +87,7 @@ namespace MatrixForm
             SetDefaultStyleDataGridView(dataGridView3);
 
             dataGridView1.Visible       = true;
+            dataGridView2.Visible       = true;
             matrixInverseButton.Visible = true;
             matrixMultyButton.Visible   = true;
         }
@@ -143,9 +163,9 @@ namespace MatrixForm
         {
             if (_safe)
             {
-                Matrix matrix = new Matrix(_matrixRows, _matrixColumns);
-                Matrix matrix2 = new Matrix(_matrixRows, _matrixColumns);
-                Matrix resultMatrix = new Matrix(_matrixRows, _matrixColumns);
+                _matrix = new Matrix(_matrixRows, _matrixColumns);
+                _matrix2 = new Matrix(_matrixRows, _matrixColumns);
+                _resultMatrix = new Matrix(_matrixRows, _matrixColumns);
 
                 label3.Text = "Матрица создана";
 
@@ -160,16 +180,38 @@ namespace MatrixForm
         //Кнопка для вычисления умножения матриц
         private void matrixMultyButton_Click(object sender, EventArgs e)
         {
-            FillMatrix(matrix, dataGridView1);
+            FillMatrix(_matrix, dataGridView1);
+            FillMatrix(_matrix2, dataGridView2);
 
-            dataGridView2.Visible = true;
+            if (_matrix != null && _matrix2 != null)
+            {
+                dataGridView3.Visible       = true;
+                labelFillMatrixPls.Visible  = false;
+
+                //Вставить код для заполнения DataGridView (метод FillDataGridView)
+                //Вставить код для вычисления матриц
+            }
+            else
+            {
+                labelFillMatrixPls.Visible = true;
+            }
         }
 
         //Кнопка для вычисления обратной матрицы
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView3.Visible = true;
-            label4.Visible = true;
+            if (_matrix != null)
+            {
+                FillMatrix(_matrix, dataGridView1);
+
+                dataGridView3.Visible       = true;
+                label4.Visible              = true;
+                labelFillMatrixPls.Visible = false;
+            }
+            else
+            {
+                labelFillMatrixPls.Visible = true;
+            }
         }
 
         /*------------------------МЕСТО ДЛЯ МУСОРА-------------------------*/
