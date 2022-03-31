@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,35 +47,6 @@ namespace MatrixForm
             }
         }
 
-        ///////переделанный под тест
-        ///
-        //public Matrix MultMatrix2(Matrix matrix1, Matrix matrix2)
-        //{
-
-        //    Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
-
-        //    if (matrix2.ColumnCount != matrix1.RowCount)
-        //    {
-        //        throw new Exception("Умножение невозможно! Количество столбцов первой матрицы не равно количеству строк второй матрицы.");
-        //    }
-
-        //    for (int i = 0; i < matrix1.RowCount; i++)
-        //    {
-        //        for (int j = 0; j < matrix2.ColumnCount; j++)
-        //        {
-        //            resultMatrix.Mass[i, j] = 0;
-
-        //            for (int k = 0; k < matrix1.ColumnCount; k++)
-        //            {
-        //                resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
-        //            }
-        //        }
-        //    }
-
-        //    return resultMatrix;
-        //}
-
-       
 
         /// <summary>
         /// Нахождение обратной матрицы
@@ -104,14 +76,14 @@ namespace MatrixForm
 
             resultMatrix = CreateTransposeMatrix(resultMatrix, N);
 
+            float num = 1 / det;
 
-           /* resultMatrix = */
+            resultMatrix = MultByNum(resultMatrix, num);
 
-            //resultMatrix = (1 / determinant) * resultMatrix; Последнее действие
-
-
-            /*NotifResult.Invoke(resultMatrix);*/
+            NotifResult.Invoke(resultMatrix);
         }
+
+
 
         public float CalculateDeterminant(ref Matrix matrix1, int N, float determinant)
         {
@@ -129,7 +101,6 @@ namespace MatrixForm
             }
             return (determinant);
         }
-
 
         public void AlliedMatrix(Matrix matrix1, int N)
         {
@@ -150,7 +121,7 @@ namespace MatrixForm
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
                 }
-                    
+
             }
             else if (N == 2)
             {
@@ -158,10 +129,25 @@ namespace MatrixForm
             }
         }
 
+        public Matrix MultByNum(Matrix matrix1, float num)
+        {
+            Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix1.ColumnCount);
+
+            for (int i = 0; i < matrix1.RowCount; i++)
+            {
+                for (int j = 0; j < matrix1.ColumnCount; j++)
+                {
+                    resultMatrix.Mass[i, j] *= num;
+                }
+            }
+            return resultMatrix;
+
+        }
+
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
         {
             Matrix transp = new Matrix(N, N);
-           
+
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
