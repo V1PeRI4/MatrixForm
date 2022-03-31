@@ -102,12 +102,12 @@ namespace MatrixForm
             resultMatrix = CreateTransposeMatrix(resultMatrix, N);
 
 
-            resultMatrix = 
+           /* resultMatrix = */
 
             //resultMatrix = (1 / determinant) * resultMatrix; Последнее действие
 
 
-            NotifResult.Invoke(resultMatrix);
+            /*NotifResult.Invoke(resultMatrix);*/
         }
 
         public float CalculateDeterminant(ref Matrix matrix1, int N, float determinant)
