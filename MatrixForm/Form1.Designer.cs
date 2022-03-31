@@ -61,7 +61,6 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ActiveBorder;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -105,17 +104,18 @@
             this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.AllowUserToResizeColumns = false;
             this.dataGridView2.AllowUserToResizeRows = false;
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.ColumnHeadersVisible = false;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3});
-            this.dataGridView2.Location = new System.Drawing.Point(449, 17);
+            this.dataGridView2.Location = new System.Drawing.Point(462, 17);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(305, 194);
+            this.dataGridView2.Size = new System.Drawing.Size(326, 194);
             this.dataGridView2.TabIndex = 1;
             this.dataGridView2.Visible = false;
             this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
@@ -141,17 +141,18 @@
             this.dataGridView3.AllowUserToDeleteRows = false;
             this.dataGridView3.AllowUserToResizeColumns = false;
             this.dataGridView3.AllowUserToResizeRows = false;
+            this.dataGridView3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.ColumnHeadersVisible = false;
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
             this.dataGridViewTextBoxColumn6});
-            this.dataGridView3.Location = new System.Drawing.Point(449, 236);
+            this.dataGridView3.Location = new System.Drawing.Point(462, 235);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView3.Size = new System.Drawing.Size(305, 203);
+            this.dataGridView3.Size = new System.Drawing.Size(326, 203);
             this.dataGridView3.TabIndex = 2;
             this.dataGridView3.Visible = false;
             // 
@@ -172,6 +173,7 @@
             // 
             // matrixInverseButton
             // 
+            this.matrixInverseButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.matrixInverseButton.Location = new System.Drawing.Point(363, 25);
             this.matrixInverseButton.Name = "matrixInverseButton";
             this.matrixInverseButton.Size = new System.Drawing.Size(75, 23);
@@ -183,6 +185,7 @@
             // 
             // matrixMultyButton
             // 
+            this.matrixMultyButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.matrixMultyButton.Location = new System.Drawing.Point(363, 54);
             this.matrixMultyButton.Name = "matrixMultyButton";
             this.matrixMultyButton.Size = new System.Drawing.Size(75, 23);
@@ -194,6 +197,7 @@
             // 
             // initColumnsTextBox
             // 
+            this.initColumnsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.initColumnsTextBox.Location = new System.Drawing.Point(72, 397);
             this.initColumnsTextBox.Name = "initColumnsTextBox";
             this.initColumnsTextBox.Size = new System.Drawing.Size(75, 20);
@@ -202,6 +206,7 @@
             // 
             // initRowsTextBox
             // 
+            this.initRowsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.initRowsTextBox.Location = new System.Drawing.Point(72, 423);
             this.initRowsTextBox.Name = "initRowsTextBox";
             this.initRowsTextBox.Size = new System.Drawing.Size(75, 20);
@@ -210,6 +215,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.Location = new System.Drawing.Point(72, 368);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -220,6 +226,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 400);
             this.label1.Name = "label1";
@@ -229,6 +236,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 426);
             this.label2.Name = "label2";
@@ -238,6 +246,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(153, 373);
             this.label3.Name = "label3";
@@ -248,8 +257,9 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(446, 220);
+            this.label4.Location = new System.Drawing.Point(459, 219);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(140, 13);
             this.label4.TabIndex = 11;
@@ -258,8 +268,9 @@
             // 
             // labelFillMatrixPls
             // 
+            this.labelFillMatrixPls.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelFillMatrixPls.AutoSize = true;
-            this.labelFillMatrixPls.Location = new System.Drawing.Point(346, 1);
+            this.labelFillMatrixPls.Location = new System.Drawing.Point(344, 1);
             this.labelFillMatrixPls.Name = "labelFillMatrixPls";
             this.labelFillMatrixPls.Size = new System.Drawing.Size(109, 13);
             this.labelFillMatrixPls.TabIndex = 12;
@@ -284,7 +295,6 @@
             this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.dataGridView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Form1";
             this.Text = "Калькулятор матриц";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
