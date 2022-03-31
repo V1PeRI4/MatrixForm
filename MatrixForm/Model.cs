@@ -60,8 +60,8 @@ namespace MatrixForm
             float det = 0;
             det = CalculateDeterminant(ref matrix1, N, det);
 
-            if (det <= 0)
-                ModelMsgEvent.Invoke("Определитель меньше нуля");
+            if (det == 0)
+                ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
 
             matrix1 = AlliedMatrix(matrix1, N); ////// доделывай
 
@@ -88,7 +88,7 @@ namespace MatrixForm
                 }
             }
             else if (N == 2)
-                determinant = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+                determinant = matrix1.Mass[0, 0] * matrix1.Mass[1, 1] - matrix1.Mass[1, 0] * matrix1.Mass[0, 1];
 
             return (determinant);
         }
@@ -120,7 +120,9 @@ namespace MatrixForm
                 {
                     for (int j = 0; j < N; j++)
                     {
-                        algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+                        algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];  
+
+                    //на выходе одни значения ебать тупой
 
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
