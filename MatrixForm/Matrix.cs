@@ -9,13 +9,16 @@ namespace MatrixForm
     public class Matrix
     {
         
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public int[,] Mass { get; set; }
+        public int RowCount { get; set; }
+        public int ColumnCount { get; set; }
+        public float[,] Mass { get; set; }
+
 
         public Matrix(int row, int column)
         {
-            Mass = new int[row, column];
+            RowCount = row;
+            ColumnCount = column;
+            Mass = new float[row, column];
         }
 
 

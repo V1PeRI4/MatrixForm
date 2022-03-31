@@ -93,6 +93,7 @@ namespace MatrixForm
             {
                 for (int j = 0; j < dataGrid.ColumnCount; j++)
                 {
+
                     dataGrid.Columns[j].Width = width;
                     dataGrid.Rows[i].Height = height;
                 }
