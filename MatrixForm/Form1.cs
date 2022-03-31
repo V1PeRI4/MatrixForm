@@ -33,6 +33,9 @@ namespace MatrixForm
             Model model = new Model();
 
             _controller = new Controller(model);
+
+            model.ModelMsgEvent += UpdateWarningLabel;
+            model.NotifResult += FillDataGridView;
         }
 
         /*-----------------------ТЕХНИЧЕСКИЙ БЛОК--------------------------*/
@@ -40,9 +43,9 @@ namespace MatrixForm
         //Метод, заполняющий некую матрицу данными из DataGridView
         private void FillMatrix(Matrix matrix, DataGridView dataGridView)
         {
-            for (int i = 0; i < matrix.Mass.GetLength(0) - 1; i++)
+            for (int i = 0; i < matrix.Mass.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.Mass.GetLength(1) - 1; j++)
+                for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
                     matrix.Mass[i, j] = Convert.ToInt32(dataGridView[i,j].Value);
                 }
@@ -189,6 +192,8 @@ namespace MatrixForm
                 dataGridView3.Visible       = true;
                 labelFillMatrixPls.Visible  = false;
 
+                _controller.Calculate(ActionEnum.MultMatrix, _matrix, _matrix2);
+
                 //Вставить код для заполнения DataGridView (метод FillDataGridView)
                 //Вставить код для вычисления матриц
             }
@@ -213,6 +218,13 @@ namespace MatrixForm
             {
                 labelFillMatrixPls.Visible = true;
             }
+        }
+
+
+        /*------------------------БЛОК ДЛЯ ДЕЛЕГАТОВ-------------------------*/
+        private void UpdateWarningLabel(string message)
+        {
+            labelFillMatrixPls.Text = message;
         }
 
         /*------------------------МЕСТО ДЛЯ МУСОРА-------------------------*/

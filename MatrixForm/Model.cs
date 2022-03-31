@@ -8,9 +8,11 @@ namespace MatrixForm
 {
     public class Model
     {
+        public delegate void ModelMsg(string message);
+        public event ModelMsg ModelMsgEvent;
+
         public delegate void ResultDelegate(Matrix resultMatrix);
         public event ResultDelegate NotifResult;
-
 
         /// <summary>
         /// Умножение матриц
@@ -23,23 +25,25 @@ namespace MatrixForm
 
             if (matrix2.ColumnCount != matrix1.RowCount)
             {
-                throw new Exception("Умножение невозможно! Количество столбцов первой матрицы не равно количеству строк второй матрицы.");
+                ModelMsgEvent.Invoke("Количество столбцов первой матрицы не равно количеству строк второй матрицы.");
             }
-
-            for (int i = 0; i < matrix1.RowCount; i++)
+            else
             {
-                for (int j = 0; j < matrix2.ColumnCount; j++)
+                for (int i = 0; i < matrix1.RowCount; i++)
                 {
-                    resultMatrix.Mass[i, j] = 0;
-
-                    for (int k = 0; k < matrix1.ColumnCount; k++)
+                    for (int j = 0; j < matrix2.ColumnCount; j++)
                     {
-                        resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
+/*                        resultMatrix.Mass[i, j] = 0;*/
+
+                        for (int k = 0; k < matrix1.ColumnCount; k++)
+                        {
+                            resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
+                        }
                     }
                 }
-            }
 
-            NotifResult.Invoke(resultMatrix);
+                NotifResult.Invoke(resultMatrix);
+            }
         }
 
         ///////переделанный под тест
@@ -79,7 +83,7 @@ namespace MatrixForm
         public void ReverseMatrix(Matrix matrix1)
         {
             if (matrix1.ColumnCount != matrix1.RowCount)
-                throw new Exception("Нахождение невозможно! Количество столбцов не равно количеству строк.");
+                ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
 
             int N = matrix1.ColumnCount;
 
@@ -87,9 +91,8 @@ namespace MatrixForm
             det = CalculateDeterminant(ref matrix1, N, det);
 
             if (det <= 0)
-            {     
-                Console.WriteLine("Определитель меньше нуля, программа остановлена");
-                return;
+            {
+                ModelMsgEvent.Invoke("Определитель меньше нуля");
             }
 
             Matrix alliedMatrix = new Matrix(N, N);

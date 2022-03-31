@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MatrixForm
 {
-         class Controller
+    class Controller
     {
         public Controller(Model model)
         {
