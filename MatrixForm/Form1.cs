@@ -2,6 +2,8 @@
  Авторазмер окон GridView +
  Реализация MVC -
  Дописать кнопки
+
+Доделать метод вычисление обратной матрицы - выдает нули
  */
 
 using System;
@@ -194,8 +196,12 @@ namespace MatrixForm
 
                 _controller.Calculate(ActionEnum.MultMatrix, _matrix, _matrix2);
 
+
+
                 //Вставить код для заполнения DataGridView (метод FillDataGridView)
                 //Вставить код для вычисления матриц
+
+
             }
             else
             {
@@ -213,6 +219,8 @@ namespace MatrixForm
                 dataGridView3.Visible       = true;
                 label4.Visible              = true;
                 labelFillMatrixPls.Visible = false;
+
+                _controller.Calculate(ActionEnum.ReverseMatrix, _matrix, _matrix2);
             }
             else
             {

@@ -34,11 +34,9 @@ namespace MatrixForm
                 {
                     for (int j = 0; j < matrix2.ColumnCount; j++)
                     {
-/*                        resultMatrix.Mass[i, j] = 0;*/
-
                         for (int k = 0; k < matrix1.ColumnCount; k++)
                         {
-                            resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
+                            resultMatrix.Mass[i, j] += matrix1.Mass[k, j] * matrix2.Mass[i, k];
                         }
                     }
                 }
@@ -67,20 +65,17 @@ namespace MatrixForm
                 ModelMsgEvent.Invoke("Определитель меньше нуля");
             }
 
-            Matrix alliedMatrix = new Matrix(N, N);
-
-            AlliedMatrix(alliedMatrix, N);
 
 
-            Matrix resultMatrix = alliedMatrix;
+            matrix1 = AlliedMatrix(matrix1, N); ////// доделывай
 
-            resultMatrix = CreateTransposeMatrix(resultMatrix, N);
+            matrix1 = CreateTransposeMatrix(matrix1, N);
 
-            float num = 1 / det;
+            float firstAction = 1 / det;
 
-            resultMatrix = MultByNum(resultMatrix, num);
+            matrix1 = MultByNum(matrix1, firstAction);
 
-            NotifResult.Invoke(resultMatrix);
+            NotifResult.Invoke(matrix1);
         }
 
 
@@ -102,7 +97,7 @@ namespace MatrixForm
             return (determinant);
         }
 
-        public void AlliedMatrix(Matrix matrix1, int N)
+        public Matrix AlliedMatrix(Matrix matrix1, int N)
         {
             float algebraicAdd = 0;
 
@@ -121,12 +116,24 @@ namespace MatrixForm
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
                 }
-
+                /////доделать перебрать логику когда большая матрица а когда маленькая
+                
             }
             else if (N == 2)
             {
-                algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+                for (int i = 0; i < N; i++)
+                {
+                    for (int j = 0; j < N; j++)
+                    {
+                        algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+
+                        alliedMatrix.Mass[i, j] = algebraicAdd;
+                    }
+                }
+                
+                
             }
+            return alliedMatrix;
         }
 
         public Matrix MultByNum(Matrix matrix1, float num)
