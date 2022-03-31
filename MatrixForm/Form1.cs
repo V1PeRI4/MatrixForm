@@ -18,13 +18,13 @@ namespace MatrixForm
 
             Matrix matrix = new Matrix(3, 3);
             Matrix matrix2 = new Matrix(3, 3);
-            Matrix resultMatrix = new Matrix(3, 3);
+            
 
             InitSizeGridView(dataGridView1, 50, 20);
             InitSizeGridView(dataGridView2, 50, 20);
             InitSizeGridView(dataGridView3, 50, 20);
 
-            int _row = matrix.GetRowCount();
+            
             
         }
 

@@ -9,41 +9,109 @@ namespace MatrixForm
 {
     public class Model
     {
-        Matrix resultMatrix = new Matrix(3, 3);
-
         public delegate void ResultDelegate(Matrix resultMatrix);
         public event ResultDelegate NotifResult;
+
+
+        /// <summary>
+        /// Умножение матриц
+        /// </summary>
         public void MultMatrix(Matrix matrix1, Matrix matrix2)
         {
-            int _row = matrix1.GetColumnCount();
 
-            int _col = matrix1.GetColumnCount();
+            Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
 
+            if (matrix2.ColumnCount != matrix1.RowCount)
+            {
+                throw new Exception("Умножение невозможно! Количество столбцов первой матрицы не равно количеству строк второй матрицы.");
+            }
 
-            int _row = matrix2.GetColumnCount();
+            for (int i = 0; i < matrix1.RowCount; i++)
+            {
+                for (int j = 0; j < matrix2.ColumnCount; j++)
+                {
+                    resultMatrix.Mass[i, j] = 0;
 
-            int _col = matrix2.GetColumnCount();
-
-
-            for (int i = 0; i < 3; i++)
-            resultMatrix.Mass[0, i] = matrix1.Mass[0, 0] * matrix2.Mass[0, i] + matrix1.Mass[0, 1] * matrix2.Mass[1, i] + matrix1.Mass[0, 2] * matrix2.Mass[2, i];
-
-            for (int i = 0; i < 3; i++)
-                resultMatrix.Mass[1, i] = matrix1.Mass[1, 0] * matrix2.Mass[0, i] + matrix1.Mass[1, 1] * matrix2.Mass[1, i] + matrix1.Mass[1, 2] * matrix2.Mass[2, i];
-
-            for (int i = 0; i < 3; i++)
-                resultMatrix.Mass[2, i] = matrix1.Mass[2, 0] * matrix2.Mass[0, i] + matrix1.Mass[2, 1] * matrix2.Mass[1, i] + matrix1.Mass[2, 2] * matrix2.Mass[2, i];
+                    for (int k = 0; k < matrix1.ColumnCount; k++)
+                    {
+                        resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
+                    }
+                }
+            }
 
             NotifResult.Invoke(resultMatrix);
         }
 
+        /// <summary>
+        /// Нахождение обратной матрицы
+        /// </summary>
         public void ReverseMatrix(Matrix matrix1)
         {
-            int detMatrix = 0;
+            if (matrix1.ColumnCount != matrix1.RowCount)
+                throw new Exception("Нахождение невозможно! Количество столбцов не равно количеству строк.");
+
+            int N = matrix1.ColumnCount;
+
+            float determinant = CalculateDeterminant(matrix1, N);
+            if (determinant <= 0)
+                return;
+
+            Matrix resultMatrix = new Matrix(N, N);
+
+            //ProcessFunctionOverData(  (i, j)   =>  {result[i, j] = ((i + j) % 2 == 1 ? -1 : 1) * CalculateMinor(i, j) / determinant;}  );
+
+            resultMatrix = CreateTransposeMatrix(resultMatrix, N);
+
+            //resultMatrix = (1 / determinant) * resultMatrix; Последнее действие
+
 
             NotifResult.Invoke(resultMatrix);
         }
 
-        
+        public int CalculateDeterminant(Matrix matrix1, int N)
+        {
+            int determinant = 0;
+            if (N != 1)
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    if (i % 2 == 0) determinant += matrix1.Mass[0, i] * CalculateDeterminant(CopyMatrix(matrix1, N, 0, i), N - 1);
+                    else determinant -= matrix1.Mass[0, i] * CalculateDeterminant(CopyMatrix(matrix1, N, 0, i), N - 1);
+                }
+            }
+            else
+                return 0;
+            //else return (matrix1.Mass[0, 0]);
+            return (determinant);
+        }
+
+        public Matrix CopyMatrix(Matrix matrix1, int N, int j, int i)
+        {
+            return matrix1;
+        }
+
+        //public void ProcessFunctionOverData(Action<int, int> func)
+        //{
+        //    for (var i = 0; i < this.M; i++)
+        //    {
+        //        for (var j = 0; j < this.N; j++)
+        //        {
+        //            func(i, j);
+        //        }
+        //    }
+        //}
+
+        public Matrix CreateTransposeMatrix(Matrix matrix, int N)
+        {
+            Matrix transp = new Matrix(N, N);
+           
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                    transp.Mass[i, j] = matrix.Mass[j, i];
+            }
+            return transp;
+        }
+
     }
 }
