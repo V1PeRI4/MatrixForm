@@ -52,9 +52,14 @@ namespace MatrixForm
 
             int N = matrix1.ColumnCount;
 
-            float determinant = CalculateDeterminant(matrix1, N);
-            if (determinant <= 0)
+            float det = 0;
+            det = CalculateDeterminant(ref matrix1, N, det);
+
+            if (det <= 0)
+            {     
+                Console.WriteLine("Определитель меньше нуля, программа остановлена");
                 return;
+            }
 
             Matrix resultMatrix = new Matrix(N, N);
 
@@ -68,25 +73,25 @@ namespace MatrixForm
             NotifResult.Invoke(resultMatrix);
         }
 
-        public int CalculateDeterminant(Matrix matrix1, int N)
+        public float CalculateDeterminant(ref Matrix matrix1, int N, float determinant)
         {
-            int determinant = 0;
-            if (N != 1)
+            if (N != 2)
             {
                 for (int i = 0; i < N; i++)
                 {
-                    if (i % 2 == 0) determinant += matrix1.Mass[0, i] * CalculateDeterminant(CopyMatrix(matrix1, N, 0, i), N - 1);
-                    else determinant -= matrix1.Mass[0, i] * CalculateDeterminant(CopyMatrix(matrix1, N, 0, i), N - 1);
+                    if (i % 2 == 0) determinant += matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, determinant);
+                    else determinant -= matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, determinant);
                 }
             }
-            else
-                return 0;
-            //else return (matrix1.Mass[0, 0]);
+            else if (N == 2)
+            {
+                determinant = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+            }
             return (determinant);
         }
 
-        public Matrix CopyMatrix(Matrix matrix1, int N, int j, int i)
-        {
+        public Matrix CopyMatrix(ref Matrix matrix1, int N, int j, int i)
+        { 
             return matrix1;
         }
 
