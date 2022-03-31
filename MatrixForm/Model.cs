@@ -15,13 +15,13 @@ namespace MatrixForm
         public delegate void ResultDelegate(Matrix resultMatrix);
         public event ResultDelegate NotifResult;
 
+
         /// <summary>
         /// Умножение матриц
         /// </summary>
-        /// 
         public void MultMatrix(Matrix matrix1, Matrix matrix2)
         {
-
+            
             Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
 
             if (matrix2.ColumnCount != matrix1.RowCount)
@@ -49,9 +49,9 @@ namespace MatrixForm
         /// <summary>
         /// Нахождение обратной матрицы
         /// </summary>
-        /// 
         public void ReverseMatrix(Matrix matrix1)
         {
+
             if (matrix1.ColumnCount != matrix1.RowCount)
                 ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
 
@@ -61,11 +61,7 @@ namespace MatrixForm
             det = CalculateDeterminant(ref matrix1, N, det);
 
             if (det <= 0)
-            {
                 ModelMsgEvent.Invoke("Определитель меньше нуля");
-            }
-
-
 
             matrix1 = AlliedMatrix(matrix1, N); ////// доделывай
 
@@ -82,6 +78,7 @@ namespace MatrixForm
 
         public float CalculateDeterminant(ref Matrix matrix1, int N, float determinant)
         {
+
             if (N != 2)
             {
                 for (int i = 0; i < N; i++)
@@ -91,9 +88,8 @@ namespace MatrixForm
                 }
             }
             else if (N == 2)
-            {
                 determinant = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
-            }
+
             return (determinant);
         }
 
@@ -105,7 +101,6 @@ namespace MatrixForm
 
             if (N != 2)
             {
-
                 for (int i = 0; i < N; i++)
                 {
                     for (int j = 0; j < N; j++)
@@ -143,12 +138,10 @@ namespace MatrixForm
             for (int i = 0; i < matrix1.RowCount; i++)
             {
                 for (int j = 0; j < matrix1.ColumnCount; j++)
-                {
                     resultMatrix.Mass[i, j] *= num;
-                }
             }
-            return resultMatrix;
 
+            return resultMatrix;
         }
 
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
@@ -160,8 +153,11 @@ namespace MatrixForm
                 for (int j = 0; j < N; j++)
                     transp.Mass[i, j] = matrix.Mass[j, i];
             }
+
             return transp;
         }
+
+
 
     }
 }
