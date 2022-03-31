@@ -1,6 +1,6 @@
 ﻿/*TODO
- Авторазмер окон GridView
- Реализация MVC
+ Авторазмер окон GridView +
+ Реализация MVC -
  */
 
 using System;
@@ -17,13 +17,76 @@ namespace MatrixForm
 {
     public partial class Form1 : Form
     {
+        Matrix matrix;
+        Matrix matrix2;
+        Matrix resultMatrix;
+
         private int _matrixColumns, _matrixRows;
-        private bool _safe;
+        private bool _safe; 
         public Form1()
         {
             InitializeComponent();
         }
 
+        /*-----------------------ТЕХНИЧЕСКИЙ БЛОК--------------------------*/
+
+        //Метод, заполняющий некую матрицу данными из DataGridView
+        private void FillMatrix(Matrix matrix, DataGridView dataGridView)
+        {
+            for (int i = 0; i < matrix.Mass.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.Mass.GetLength(1); j++)
+                {
+                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView[i,j].Value);
+                }
+            }
+        }
+
+        /*------------------БЛОК ДЛЯ СТИЛЕЙ------------------------*/
+
+        //Метод, обьявляющий размер строк и столбцов, а так же размер и стили окна DataGridView
+        private void InitFullGridView()
+        {
+            //Обьявление количества столбов и строк
+            SetColumnRowDataGrid(dataGridView1);
+            SetColumnRowDataGrid(dataGridView2);
+            SetColumnRowDataGrid(dataGridView3);
+
+            //Обьявление размера столбов и строк
+            InitSizeGridView(dataGridView1, 50, 20);
+            InitSizeGridView(dataGridView2, 50, 20);
+            InitSizeGridView(dataGridView3, 50, 20);
+
+            //Обьявление ширины и высоты окна DataGridView
+            SetDataGridViewSize(dataGridView1);
+            SetDataGridViewSize(dataGridView2);
+            SetDataGridViewSize(dataGridView3);
+
+            //Обьявление стилей окна DataGridView
+            SetDefaultStyleDataGridView(dataGridView1);
+            SetDefaultStyleDataGridView(dataGridView2);
+            SetDefaultStyleDataGridView(dataGridView3);
+
+            dataGridView1.Visible       = true;
+            matrixInverseButton.Visible = true;
+            matrixMultyButton.Visible   = true;
+        }
+
+        //Метод определяющий размер окна DataGridView по количеству строк и размеру строк и столбцов
+        private void SetDataGridViewSize(DataGridView dataGridView)
+        {
+            dataGridView.Width = dataGridView.Columns[0].Width * dataGridView.Columns.Count + 4;
+            dataGridView.Height = dataGridView.Rows[0].Height * dataGridView.Rows.Count + 4;
+        }
+
+        //Метод, определяющий количество строк и столбцов по данным с кнопки Button3
+        private void SetColumnRowDataGrid(DataGridView dataGridView)
+        {
+            dataGridView.RowCount = _matrixRows;
+            dataGridView.ColumnCount = _matrixColumns;
+        }
+
+        //Метод, обьявляющий размер строк и столбцов DataGridView
         private void InitSizeGridView(DataGridView dataGrid, int width, int height)
         {
             for (int i = 0; i < dataGrid.RowCount; i++)
@@ -36,17 +99,46 @@ namespace MatrixForm
             }
         }
 
-        public void FillMatrix(Matrix matrix)
+        //Обьявление стилей окна
+        private void SetDefaultStyleDataGridView(DataGridView dataGridView)
         {
-            for (int i = 0; i < matrix.Mass.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.Mass.GetLength(1); j++)
-                {
-                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView1[i,j].Value);
-                }
-            }
+            //Делает всё прозрачным
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.BackgroundColor = Form1.DefaultBackColor;
         }
 
+        /*------------------------БЛОК ДЛЯ TEXT BOX------------------------------*/
+
+        private void initColumnsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            InitMatrixSize(initColumnsTextBox, ref _matrixColumns);
+        }
+
+        private void initRowsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            InitMatrixSize(initRowsTextBox, ref _matrixRows);
+        }
+
+        //Метод для обьявления размера матрицы. Возвращает булево _safe
+        private bool InitMatrixSize(TextBox textBox, ref int value)
+        {
+            _safe = true;
+
+            try
+            {
+                value = int.Parse(textBox.Text);
+            }
+            catch (FormatException)
+            {
+                _safe = false;
+            }
+
+            return _safe;
+        }
+
+        /*-------------------------МЕСТО ДЛЯ КНОПОК---------------------------*/
+
+        //Кнопка "Создать"
         private void button3_Click(object sender, EventArgs e)
         {
             if (_safe)
@@ -65,53 +157,11 @@ namespace MatrixForm
             }
         }
 
-        private void InitFullGridView()
-        {
-            dataGridView1.RowCount    = _matrixRows;
-            dataGridView1.ColumnCount = _matrixColumns;
-            dataGridView2.RowCount    = _matrixRows;
-            dataGridView2.ColumnCount = _matrixColumns;
-            dataGridView3.RowCount    = _matrixRows;
-            dataGridView3.ColumnCount = _matrixColumns;
-
-            InitSizeGridView(dataGridView1, 50, 20);
-            InitSizeGridView(dataGridView2, 50, 20);
-            InitSizeGridView(dataGridView3, 50, 20);
-
-            dataGridView1.Visible       = true;
-            matrixInverseButton.Visible = true;
-            matrixMultyButton.Visible   = true;
-        }
-
-        private void initColumnsTextBox_TextChanged(object sender, EventArgs e)
-        {
-            InitMatrixSize(initColumnsTextBox, ref _matrixColumns);
-        }
-
-        private void initRowsTextBox_TextChanged(object sender, EventArgs e)
-        {
-            InitMatrixSize(initRowsTextBox, ref _matrixRows);
-        }
-
-        private bool InitMatrixSize(TextBox textBox, ref int value)
-        {
-            _safe = true;
-
-            try
-            {
-                value = int.Parse(textBox.Text);
-            }
-            catch (FormatException)
-            {
-                _safe = false;
-            }
-
-            return _safe;
-        }
-
         //Кнопка для вычисления умножения матриц
         private void matrixMultyButton_Click(object sender, EventArgs e)
         {
+            FillMatrix(matrix, dataGridView1);
+
             dataGridView2.Visible = true;
         }
 
@@ -122,16 +172,20 @@ namespace MatrixForm
             label4.Visible = true;
         }
 
-        /*МЕСТО ДЛЯ МУСОРА*/
+        /*------------------------МЕСТО ДЛЯ МУСОРА-------------------------*/
         private void label3_Click(object sender, EventArgs e)
         {
         }
 
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+/*            if ((sender as DataGridView).Rows.Count > 0)
+            {
+                SetDataGridViewSize(sender as DataGridView);
+            }*/
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
     }
