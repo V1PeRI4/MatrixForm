@@ -174,6 +174,12 @@ namespace MatrixForm
                 label3.Text = "Матрица создана";
 
                 InitFullGridView();
+
+                dataGridView1.Visible = true;
+                dataGridView2.Visible = true;
+                matrixInverseButton.Visible = true;
+                matrixMultyButton.Visible = true;
+                labelFillMatrixPls.Visible = true;
             }
             else
             {
