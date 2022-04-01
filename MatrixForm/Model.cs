@@ -15,13 +15,13 @@ namespace MatrixForm
         public delegate void ResultDelegate(Matrix resultMatrix);
         public event ResultDelegate NotifResult;
 
+
         /// <summary>
         /// Умножение матриц
         /// </summary>
-        /// 
         public void MultMatrix(Matrix matrix1, Matrix matrix2)
         {
-
+            
             Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
 
             if (matrix2.ColumnCount != matrix1.RowCount)
@@ -34,11 +34,9 @@ namespace MatrixForm
                 {
                     for (int j = 0; j < matrix2.ColumnCount; j++)
                     {
-/*                        resultMatrix.Mass[i, j] = 0;*/
-
                         for (int k = 0; k < matrix1.ColumnCount; k++)
                         {
-                            resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
+                            resultMatrix.Mass[i, j] += matrix1.Mass[k, j] * matrix2.Mass[i, k];
                         }
                     }
                 }
@@ -51,9 +49,9 @@ namespace MatrixForm
         /// <summary>
         /// Нахождение обратной матрицы
         /// </summary>
-        /// 
         public void ReverseMatrix(Matrix matrix1)
         {
+
             if (matrix1.ColumnCount != matrix1.RowCount)
                 ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
 
@@ -62,31 +60,25 @@ namespace MatrixForm
             float det = 0;
             det = CalculateDeterminant(ref matrix1, N, det);
 
-            if (det <= 0)
-            {
-                ModelMsgEvent.Invoke("Определитель меньше нуля");
-            }
+            if (det == 0)
+                ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
 
-            Matrix alliedMatrix = new Matrix(N, N);
+            matrix1 = AlliedMatrix(matrix1, N); ////// доделывай
 
-            AlliedMatrix(alliedMatrix, N);
+            matrix1 = CreateTransposeMatrix(matrix1, N);
 
+            float firstAction = 1 / det;
 
-            Matrix resultMatrix = alliedMatrix;
+            matrix1 = MultByNum(matrix1, firstAction);
 
-            resultMatrix = CreateTransposeMatrix(resultMatrix, N);
-
-            float num = 1 / det;
-
-            resultMatrix = MultByNum(resultMatrix, num);
-
-            NotifResult.Invoke(resultMatrix);
+            NotifResult.Invoke(matrix1);
         }
 
 
 
         public float CalculateDeterminant(ref Matrix matrix1, int N, float determinant)
         {
+
             if (N != 2)
             {
                 for (int i = 0; i < N; i++)
@@ -96,13 +88,12 @@ namespace MatrixForm
                 }
             }
             else if (N == 2)
-            {
-                determinant = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
-            }
+                determinant = matrix1.Mass[0, 0] * matrix1.Mass[1, 1] - matrix1.Mass[1, 0] * matrix1.Mass[0, 1];
+
             return (determinant);
         }
 
-        public void AlliedMatrix(Matrix matrix1, int N)
+        public Matrix AlliedMatrix(Matrix matrix1, int N)
         {
             float algebraicAdd = 0;
 
@@ -110,7 +101,6 @@ namespace MatrixForm
 
             if (N != 2)
             {
-
                 for (int i = 0; i < N; i++)
                 {
                     for (int j = 0; j < N; j++)
@@ -121,12 +111,26 @@ namespace MatrixForm
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
                 }
-
+                /////доделать перебрать логику когда большая матрица а когда маленькая
+                
             }
             else if (N == 2)
             {
-                algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];
+                for (int i = 0; i < N; i++)
+                {
+                    for (int j = 0; j < N; j++)
+                    {
+                        algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];  
+
+                    //на выходе одни значения ебать тупой
+
+                        alliedMatrix.Mass[i, j] = algebraicAdd;
+                    }
+                }
+                
+                
             }
+            return alliedMatrix;
         }
 
         public Matrix MultByNum(Matrix matrix1, float num)
@@ -136,12 +140,10 @@ namespace MatrixForm
             for (int i = 0; i < matrix1.RowCount; i++)
             {
                 for (int j = 0; j < matrix1.ColumnCount; j++)
-                {
                     resultMatrix.Mass[i, j] *= num;
-                }
             }
-            return resultMatrix;
 
+            return resultMatrix;
         }
 
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
@@ -153,8 +155,11 @@ namespace MatrixForm
                 for (int j = 0; j < N; j++)
                     transp.Mass[i, j] = matrix.Mass[j, i];
             }
+
             return transp;
         }
+
+
 
     }
 }
