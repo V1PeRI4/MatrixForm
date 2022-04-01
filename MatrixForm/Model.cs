@@ -97,6 +97,7 @@ namespace MatrixForm
         {
             float algebraicAdd = 0;
 
+            Matrix tempMatrix = matrix1;
             Matrix alliedMatrix = new Matrix(N, N);
 
             if (N != 2)
@@ -105,8 +106,8 @@ namespace MatrixForm
                 {
                     for (int j = 0; j < N; j++)
                     {
-                        if (i % 2 == 0) algebraicAdd += matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
-                        else algebraicAdd -= matrix1.Mass[0, i] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd);
+                        if (i % 2 == 0) algebraicAdd += matrix1.Mass[i, j] * CalculateDeterminant(DelRowColumnMatrix(ref matrix1, i, j), N - 1, algebraicAdd);
+                        else algebraicAdd -= matrix1.Mass[i, j] * CalculateDeterminant(ref matrix1, N - 1, algebraicAdd); //заметь как уменньшаютсчя матрицы
 
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
@@ -116,18 +117,22 @@ namespace MatrixForm
             }
             else if (N == 2)
             {
-                for (int i = 0; i < N; i++)
+                for (int temp = 0; temp < N*N; temp++)
                 {
-                    for (int j = 0; j < N; j++)
+                    for (int i = 0; i < N; i++)
                     {
-                        algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];  
-
-                    //на выходе одни значения тупой
-
-                        alliedMatrix.Mass[i, j] = algebraicAdd;
+                        for (int j = 0; j < N; j++)
+                        {
+                            tempMatrix = DelRowColumnMatrix(ref tempMatrix, i, j);
+                            if (tempMatrix.Mass[i, j] != 0)
+                                alliedMatrix.Mass[i, j] = tempMatrix.Mass[i, j];
+                        }
                     }
+
                 }
                 
+
+               
                 
             }
             return alliedMatrix;
@@ -160,6 +165,27 @@ namespace MatrixForm
         }
 
 
+        public Matrix DelRowColumnMatrix(ref Matrix matrix, int DelRow, int DelColumn)
+        {
+            Matrix delRowColumnMatrix = new Matrix(matrix.RowCount - 1, matrix.ColumnCount - 1);
+
+            for (int i = 0; i < delRowColumnMatrix.ColumnCount; i++)
+            {
+                for (int j = 0; j < delRowColumnMatrix.RowCount; j++)
+                {
+                    if(i != DelRow && j != DelColumn)
+                    {
+                        delRowColumnMatrix.Mass[i, j] = matrix.Mass[i, j];
+                    }
+                }
+            }
+
+            return delRowColumnMatrix;
+
+        }
+
+
+        
 
     }
 }
