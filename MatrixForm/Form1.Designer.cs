@@ -270,11 +270,11 @@
             // 
             this.labelFillMatrixPls.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelFillMatrixPls.AutoSize = true;
-            this.labelFillMatrixPls.Location = new System.Drawing.Point(13, 219);
+            this.labelFillMatrixPls.Location = new System.Drawing.Point(153, 400);
             this.labelFillMatrixPls.Name = "labelFillMatrixPls";
-            this.labelFillMatrixPls.Size = new System.Drawing.Size(109, 13);
+            this.labelFillMatrixPls.Size = new System.Drawing.Size(67, 13);
             this.labelFillMatrixPls.TabIndex = 12;
-            this.labelFillMatrixPls.Text = "Заполните матрицу!";
+            this.labelFillMatrixPls.Text = "Ошибок нет";
             this.labelFillMatrixPls.Visible = false;
             // 
             // Form1

@@ -34,8 +34,6 @@ namespace MatrixForm
                 {
                     for (int j = 0; j < matrix2.ColumnCount; j++)
                     {
-/*                        resultMatrix.Mass[i, j] = 0;*/
-
                         for (int k = 0; k < matrix1.ColumnCount; k++)
                         {
                             resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
@@ -54,8 +52,8 @@ namespace MatrixForm
         /// 
         public void ReverseMatrix(Matrix matrix1)
         {
-            if (matrix1.ColumnCount != matrix1.RowCount)
-                ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
+            /*if (matrix1.ColumnCount != matrix1.RowCount)
+                ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");*/
 
             int N = matrix1.ColumnCount;
 

@@ -43,11 +43,20 @@ namespace MatrixForm
         //Метод, заполняющий некую матрицу данными из DataGridView
         private void FillMatrix(Matrix matrix, DataGridView dataGridView)
         {
-            for (int i = 0; i < matrix.Mass.GetLength(0); i++)
+            int x = matrix.Mass.GetLength(0);
+            int y = matrix.Mass.GetLength(1);
+
+            if (_matrix2.ColumnCount != _matrix.RowCount)
             {
-                for (int j = 0; j < matrix.Mass.GetLength(1); j++)
+                x--;
+                y--;
+            }
+
+            for (int i = 0; i < x; i++)
+            {
+                for (int j = 0; j < y; j++)
                 {
-                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView[i,j].Value);
+                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView[i, j].Value);
                 }
             }
         }
@@ -88,11 +97,6 @@ namespace MatrixForm
             SetDefaultStyleDataGridView(dataGridView1);
             SetDefaultStyleDataGridView(dataGridView2);
             SetDefaultStyleDataGridView(dataGridView3);
-
-            dataGridView1.Visible       = true;
-            dataGridView2.Visible       = true;
-            matrixInverseButton.Visible = true;
-            matrixMultyButton.Visible   = true;
         }
 
         //Метод определяющий размер окна DataGridView по количеству строк и размеру строк и столбцов
@@ -174,6 +178,12 @@ namespace MatrixForm
                 label3.Text = "Матрица создана";
 
                 InitFullGridView();
+
+                dataGridView1.Visible = true;
+                dataGridView2.Visible = true;
+                matrixInverseButton.Visible = true;
+                matrixMultyButton.Visible = true;
+                labelFillMatrixPls.Visible = true;
             }
             else
             {
@@ -184,22 +194,14 @@ namespace MatrixForm
         //Кнопка для вычисления умножения матриц
         private void matrixMultyButton_Click(object sender, EventArgs e)
         {
-            FillMatrix(_matrix, dataGridView1);
+                FillMatrix(_matrix, dataGridView1);
             FillMatrix(_matrix2, dataGridView2);
 
             if (_matrix != null && _matrix2 != null)
             {
                 dataGridView3.Visible       = true;
-                labelFillMatrixPls.Visible  = false;
 
                 _controller.Calculate(ActionEnum.MultMatrix, _matrix, _matrix2);
-
-                //Вставить код для заполнения DataGridView (метод FillDataGridView)
-                //Вставить код для вычисления матриц
-            }
-            else
-            {
-                labelFillMatrixPls.Visible = true;
             }
         }
 
@@ -212,11 +214,6 @@ namespace MatrixForm
 
                 dataGridView3.Visible       = true;
                 label4.Visible              = true;
-                labelFillMatrixPls.Visible = false;
-            }
-            else
-            {
-                labelFillMatrixPls.Visible = true;
             }
         }
 
