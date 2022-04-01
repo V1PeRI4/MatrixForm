@@ -270,7 +270,7 @@
             // 
             this.labelFillMatrixPls.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelFillMatrixPls.AutoSize = true;
-            this.labelFillMatrixPls.Location = new System.Drawing.Point(153, 400);
+            this.labelFillMatrixPls.Location = new System.Drawing.Point(153, 404);
             this.labelFillMatrixPls.Name = "labelFillMatrixPls";
             this.labelFillMatrixPls.Size = new System.Drawing.Size(67, 13);
             this.labelFillMatrixPls.TabIndex = 12;
