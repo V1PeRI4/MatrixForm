@@ -36,7 +36,7 @@ namespace MatrixForm
                     {
                         for (int k = 0; k < matrix1.ColumnCount; k++)
                         {
-                            resultMatrix.Mass[i, j] += matrix1.Mass[k, j] * matrix2.Mass[i, k];
+                            resultMatrix.Mass[j, i] += matrix1.Mass[j, k] * matrix2.Mass[k, i];
                         }
                     }
                 }

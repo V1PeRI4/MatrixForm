@@ -45,6 +45,100 @@ namespace MatrixForm
             model.NotifResult += FillDataGridView;
         }
 
+        /*-------------------------МЕСТО ДЛЯ КНОПОК---------------------------*/
+
+        //Кнопка "Создать"
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (_safe && initColumnsTextBox.Text != "" && initRowsTextBox.Text != "")
+            {
+
+                //Проверяет введенный текст на ограничение по размеру
+                if (Convert.ToInt32(initColumnsTextBox.Text) <= 6 && Convert.ToInt32(initRowsTextBox.Text) <= 6)
+                {
+                    _matrix = new Matrix(_matrixRows, _matrixColumns);
+
+                    SetColumnRowDataGrid(dataGridView1, _matrixRows, _matrixColumns);
+                    InitFullGridView(dataGridView1);
+
+                    dataGridView1.Visible = true;
+                    matrixInverseButton.Visible = true;
+                    matrixMultyButton.Visible = true;
+
+                    label3.Text = "Первая матрица создана";
+                }
+                else
+                {
+                    FillLabelWithBorders();
+                }
+            }
+            else
+            {
+                label3.Text = "Ошибка ввода";
+            }
+        }
+
+        //Кнопка "Создать" для второй матрицы
+        private void createSecondMatrixTextBox_Click(object sender, EventArgs e)
+        {
+            if (_safe && initColumns2TextBox.Text != "" && initRows2TextBox.Text != "")
+            {
+                if (Convert.ToInt32(initColumns2TextBox.Text) <= 6 && Convert.ToInt32(initRows2TextBox.Text) <= 6)
+                {
+                    _matrix2 = new Matrix(_matrix2Rows, _matrix2Columns);
+
+                    SetColumnRowDataGrid(dataGridView2, _matrix2Rows, _matrix2Columns);
+                    InitFullGridView(dataGridView2);
+
+                    _matrix2Created = true;
+
+                    dataGridView2.Visible = true;
+                    label3.Text = "Вторая матрица создана";
+                }
+                else
+                {
+                    FillLabelWithBorders();
+                }
+            }
+            else
+            {
+                label3.Text = "Ошибка ввода";
+            }
+        }
+
+        //Кнопка для вычисления умножения матриц
+        private void matrixMultyButton_Click(object sender, EventArgs e)
+        {
+            if (_matrix2Created)
+            {
+                FillMatrix(_matrix, dataGridView1);
+                FillMatrix(_matrix2, dataGridView2);
+
+                SetColumnRowDataGrid(dataGridView3, _matrixColumns, _matrix2Rows);
+                InitFullGridView(dataGridView3);
+
+                _controller.Calculate(ActionEnum.MultMatrix, _matrix, _matrix2);
+
+                dataGridView3.Visible = true;
+            }
+            else
+            {
+                label3.Text = "Вторая матрица не создана";
+            }
+        }
+
+        //Кнопка для вычисления обратной матрицы
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FillMatrix(_matrix, dataGridView1);
+
+            dataGridView3.Visible = true;
+            label4.Visible = true;
+
+            _controller.Calculate(ActionEnum.ReverseMatrix, _matrix, _matrix2);
+        }
+
+
         /*-----------------------ТЕХНИЧЕСКИЙ БЛОК--------------------------*/
 
         //Метод, заполняющий некую матрицу данными из DataGridView
@@ -66,9 +160,14 @@ namespace MatrixForm
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    dataGridView3[i, j].Value = matrix.Mass[i, j];
+                    dataGridView3[j, i].Value = matrix.Mass[i, j];
                 }
             }
+        }
+
+        private void FillLabelWithBorders()
+        {
+            label3.Text = "Нельзя создать матрицу больше чем 6х6";
         }
 
         /*------------------БЛОК ДЛЯ СТИЛЕЙ------------------------*/
@@ -163,87 +262,6 @@ namespace MatrixForm
 
             return _safe;
         }
-
-        /*-------------------------МЕСТО ДЛЯ КНОПОК---------------------------*/
-
-        //Кнопка "Создать"
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (_safe && initColumnsTextBox.Text != "" && initRowsTextBox.Text != "")
-            {
-                _matrix = new Matrix(_matrixRows, _matrixColumns);
-
-                SetColumnRowDataGrid(dataGridView1, _matrixRows, _matrixColumns);
-                InitFullGridView(dataGridView1);
-
-                dataGridView1.Visible = true;
-                matrixInverseButton.Visible = true;
-                matrixMultyButton.Visible = true;
-
-                label3.Text = "Первая матрица создана";
-            }
-            else
-            {
-                label3.Text = "Ошибка";
-            }
-        }
-
-        //Кнопка "Создать" для второй матрицы
-        private void createSecondMatrixTextBox_Click(object sender, EventArgs e)
-        {
-            if (_safe && initColumns2TextBox.Text != "" && initRows2TextBox.Text != "")
-            {
-                _matrix2 = new Matrix(_matrix2Rows, _matrix2Columns);
-
-                SetColumnRowDataGrid(dataGridView2, _matrix2Rows, _matrix2Columns);
-                InitFullGridView(dataGridView2);
-
-                _matrix2Created = true;
-
-                dataGridView2.Visible = true;
-                label3.Text = "Вторая матрица создана";
-            }
-            else
-            {
-                label3.Text = "Ошибка";
-            }
-        }
-
-
-        //Кнопка для вычисления умножения матриц
-        private void matrixMultyButton_Click(object sender, EventArgs e)
-        {
-            FillMatrix(_matrix, dataGridView1);
-            FillMatrix(_matrix2, dataGridView2);
-
-            if (_matrix != null && _matrix2 != null && _matrix2Created)
-            {
-                _controller.Calculate(ActionEnum.MultMatrix, _matrix, _matrix2);
-
-                SetColumnRowDataGrid(dataGridView3, _matrixRows, _matrix2Columns);
-
-                dataGridView3.Visible = true;
-            }
-            else
-            {
-                label3.Text = "Вторая матрица не создана";
-            }
-        }
-
-        //Кнопка для вычисления обратной матрицы
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (_matrix != null)
-            {
-                FillMatrix(_matrix, dataGridView1);
-
-                dataGridView3.Visible   = true;
-                label4.Visible          = true;
-
-                _controller.Calculate(ActionEnum.ReverseMatrix, _matrix, _matrix2);
-            }
-        }
-
 
         /*------------------------БЛОК ДЛЯ ДЕЛЕГАТОВ-------------------------*/
         private void UpdateWarningLabel(string message)
