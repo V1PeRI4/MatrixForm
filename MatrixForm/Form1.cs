@@ -219,7 +219,7 @@ namespace MatrixForm
         //Обьявление стилей окна
         private void SetDefaultStyleDataGridView(DataGridView dataGridView)
         {
-            //Делает всё прозрачным
+            //Делает окно прозрачным
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.BackgroundColor = Form1.DefaultBackColor;
         }
