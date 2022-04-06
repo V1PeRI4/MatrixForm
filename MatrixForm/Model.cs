@@ -122,7 +122,7 @@ namespace MatrixForm
                     {
                         algebraicAdd = matrix1.Mass[0, 0] * matrix1.Mass[0, 1] - matrix1.Mass[1, 0] * matrix1.Mass[1, 1];  
 
-                    //на выходе одни значения ебать тупой
+                    //на выходе одни значения тупой
 
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
