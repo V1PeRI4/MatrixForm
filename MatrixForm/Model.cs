@@ -1,4 +1,6 @@
-﻿namespace MatrixForm
+﻿using System.Collections.Generic;
+
+namespace MatrixForm
 {
     public class Model
     {
@@ -26,13 +28,13 @@
                     for (int j = 0; j < matrix2.ColumnCount; j++)
                     {
                         for (int k = 0; k < matrix1.ColumnCount; k++)
-                        {
                             resultMatrix.Mass[i, j] += matrix1.Mass[i, k] * matrix2.Mass[k, j];
-                        }
+
                     }
                 }
                 NotifResult.Invoke(resultMatrix);
             }
+
         }
 
 
@@ -53,7 +55,7 @@
             if (det == 0)
                 ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
 
-            matrix1 = AlliedMatrix(matrix1, N, det); ////// доделывай
+            matrix1 = AlliedMatrix(matrix1, N, det); 
 
             matrix1 = CreateTransposeMatrix(matrix1, N);
 
@@ -89,6 +91,7 @@
 
             Matrix tempMatrix = matrix1;
             Matrix alliedMatrix = new Matrix(N, N);
+            Matrix reverseIndexMatrix = ReverseIndexMatrix(matrix1);
 
             if (N > 2)
             {
@@ -104,22 +107,22 @@
                     }
                 }
                 /////доделать перебрать логику когда большая матрица а когда маленькая
-                
+
             }
             else if (N == 2)
             {
-                    for (int i = 0; i < N; i++)
+                for (int i = 0; i < N; i++)
+                {
+                    for (int j = 0; j < N; j++)
                     {
-                        for (int j = 0; j < N; j++)
-                        {
                         if (tempMatrix.Mass[i, j] != 0)
-                            if ((j % 2 == 0) || (i % 2 == 0)) alliedMatrix.Mass[i, j] += tempMatrix.Mass[i, j] ;
-                            else alliedMatrix.Mass[i, j] -= tempMatrix.Mass[i, j] ; 
-                        }
+                            if ((i + j) % 2 == 0) alliedMatrix.Mass[i, j] += reverseIndexMatrix.Mass[i, j];
+                            else alliedMatrix.Mass[i, j] -= reverseIndexMatrix.Mass[i, j];
                     }
-
                 }
-                
+
+            }
+
             return alliedMatrix;
         }
 
@@ -138,12 +141,18 @@
 
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
         {
-            Matrix transp = matrix;
+            Matrix transp = new Matrix(N, N);
+
 
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
-                    transp.Mass[i, j] = matrix.Mass[j, i];
+                {    
+                    transp.Mass[i, j] = matrix.Mass[i, j];
+                    
+                    if(i != j)
+                        transp.Mass[i, j] = matrix.Mass[j, i];
+                }
             }
 
             return transp;
@@ -157,7 +166,7 @@
             for (int i = 0; i < DelRow; i++)
             {
                 for (int j = 0; j < delRowMatrix.ColumnCount; j++)
-                        delRowMatrix.Mass[i, j] = matrix.Mass[i, j];
+                    delRowMatrix.Mass[i, j] = matrix.Mass[i, j];
             }
 
             for (int i = DelRow; i < delRowMatrix.RowCount; i++)
@@ -165,7 +174,7 @@
                 for (int j = 0; j < delRowMatrix.ColumnCount; j++)
                     delRowMatrix.Mass[i, j] = matrix.Mass[i + 1, j];
             }
-             
+
             return delRowMatrix;
         }
 
@@ -198,6 +207,36 @@
 
         }
 
+        public Matrix ReverseIndexMatrix(Matrix matrix)
+        {
+            Matrix reverseIndexMatrix = new Matrix(matrix.RowCount, matrix.ColumnCount);
+            int tempNum = 0;
+            float  g;
+
+            List<float> tempList = new List<float>();
+
+            for (int i = 0; i < matrix.RowCount; i++)
+            {
+                for (int j = 0; j < matrix.ColumnCount; j++)
+                {
+                    tempList.Add(matrix.Mass[i, j]);
+
+                    g = tempList[0];
+                }
+            }
+
+            tempList.Reverse();
+
+            for (int i = 0; i < matrix.RowCount; i++)
+            {
+                for (int j = 0; j < matrix.ColumnCount; j++)
+                {
+                    reverseIndexMatrix.Mass[i, j] = tempList[tempNum];
+                    tempNum++;
+                }
+            }
+            return reverseIndexMatrix;
+        }
 
 
 
