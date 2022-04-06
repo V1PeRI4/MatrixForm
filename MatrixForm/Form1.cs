@@ -148,7 +148,7 @@ namespace MatrixForm
             {
                 for (int i = 0; i < matrix.Mass.GetLength(1); i++)
                 {
-                    matrix.Mass[i, j] = Convert.ToInt32(dataGridView[j, i].Value); //изменил индексацию датагрида, тк изначально считывает неправильно
+                    matrix.Mass[j, i] = Convert.ToInt32(dataGridView[i, j].Value); //изменил индексацию датагрида, тк изначально считывает неправильно
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace MatrixForm
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    dataGridView3[j, i].Value = matrix.Mass[i, j];   //изменил индексацию датагрида, тк изначально считывает неправильно
+                    dataGridView3[i, j].Value = matrix.Mass[j, i];   //изменил индексацию датагрида, тк изначально считывает неправильно
                 }
             }
         }
