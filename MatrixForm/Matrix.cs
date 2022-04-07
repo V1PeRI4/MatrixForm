@@ -11,14 +11,14 @@ namespace MatrixForm
         
         public int RowCount { get; set; }
         public int ColumnCount { get; set; }
-        public float[,] Mass { get; set; }
+        public double[,] Mass { get; set; }
 
 
         public Matrix(int row, int column)
         {
             RowCount = row;
             ColumnCount = column;
-            Mass = new float[row, column];
+            Mass = new double[row, column];
         }
 
 
