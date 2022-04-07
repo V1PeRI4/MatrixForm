@@ -1,20 +1,32 @@
-﻿using System.Collections.Generic;
+﻿/*TODO
+
+матрица 4 на 4 и больше обратная.
+возможно сделать остальные действия с матрицами.
+ */
+
+using System.Collections.Generic;
 
 namespace MatrixForm
 {
     public class Model
     {
+        /*-------------------------ДЕЛЕГАТЫ---------------------------*/
+
+
+        // Для сообщение о действии, ошибки и тд (UpdateWarningLabel)
         public delegate void ModelMsg(string message);
         public event ModelMsg ModelMsgEvent;
 
+        // Для передачи в FillDataGridView матрицы
         public delegate void ResultDelegate(Matrix resultMatrix);
         public event ResultDelegate NotifResult;
+
 
 
         /*-------------------------ОСНОВНЫЕ МЕТОДЫ---------------------------*/
 
 
-        // Метод умножения двух матриц
+        /*---Метод умножения двух матриц---*/
         public void MultMatrix(Matrix matrix1, Matrix matrix2)
         {
             Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
@@ -39,31 +51,23 @@ namespace MatrixForm
         }
 
 
-        // Метод вычисления обратной матрицы
+        /*---Метод для вычисления обратной матрицы---*/
         public void ReverseMatrix(Matrix matrix1)
         {
-            if (matrix1.ColumnCount != matrix1.RowCount)
-            {
-                ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
-                return;
-            }
-            
-            int N = matrix1.ColumnCount;
+            CheckColumnAndRowEquality(matrix1); // Проверка столбцов на равенство
+
             double det = 0;
+            det = CalculateDeterminant(matrix1, matrix1.ColumnCount, det); // Вычисление определителя
 
-            det = CalculateDeterminant(matrix1, N, det);
+            IsIdentityMatrix(matrix1, det); // Если матрица еденичная
 
-            IsIdentityMatrix(matrix1, ref det);
-
-            if (det == 0)
+            if (det == 0) // Проверка на нулевой определитель
                 ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
 
-            matrix1 = AlliedMatrix(matrix1, N, det); 
-            matrix1 = CreateTransposeMatrix(matrix1, N);
-            double firstAction = 1 / det;
-            matrix1 = MultByNum(matrix1, firstAction);
-
-            matrix1 = NumberRoundingMatrix(matrix1);
+            matrix1 = AlliedMatrix(matrix1, matrix1.ColumnCount, det); // Союзная матрица
+            matrix1 = CreateTransposeMatrix(matrix1, matrix1.ColumnCount); // Транспонирование матрицы
+            matrix1 = MultByNum(matrix1, det); // Умножение на число
+            matrix1 = NumberRoundingMatrix(matrix1); // Округление результата
 
             NotifResult.Invoke(matrix1);
         }
@@ -73,19 +77,7 @@ namespace MatrixForm
         /*-------------------------ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ДЛЯ ОБРАТНОЙ МАТРИЦЫ---------------------------*/
 
 
-        //Если матрица еденичная, то выводим еденицу деленную на единственное число в матрице
-        public void IsIdentityMatrix(Matrix matrix1, ref double det)
-        {
-            if (matrix1.ColumnCount == 1 && matrix1.RowCount == 1)
-            {
-                matrix1.Mass[0, 0] = 1 / matrix1.Mass[0, 0];
-                det = 1;
-                NotifResult.Invoke(matrix1);
-            }
-        }
-
-
-        //Вычисление опеределителя матрицы
+        /*---Вычисление опеределителя матрицы---*/
         public double CalculateDeterminant(Matrix matrix1, int N, double determinant)
         {
             if (N != 2)
@@ -104,7 +96,7 @@ namespace MatrixForm
         }
 
 
-        // Нахождение союзной матрицы
+        /*---Нахождение союзной матрицы---*/
         public Matrix AlliedMatrix(Matrix matrix1, int N, double det)
         {
             double algebraicAdd = 0;
@@ -123,15 +115,12 @@ namespace MatrixForm
                         //if (i % 2 == 0) algebraicAdd += matrix1.Mass[i, j] * CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det);
                         //else algebraicAdd -= matrix1.Mass[i, j] * CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det); //заметь как уменньшаютсчя матрицы
 
-                        if ( (i + j) % 2 == 0) algebraicAdd +=  CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det);
-                        else algebraicAdd -= CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det); //заметь как уменньшаютсчя матрицы
-
+                        if ((i + j) % 2 == 0) algebraicAdd += CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det);
+                        else algebraicAdd -= CalculateDeterminant(DecreaseMatrix(matrix1, i, j), N - 1, det); 
 
                         alliedMatrix.Mass[i, j] = algebraicAdd;
                     }
                 }
-                /////доделать перебрать логику когда большая матрица а когда маленькая
-
             }
             else if (N == 2)
             {
@@ -151,7 +140,7 @@ namespace MatrixForm
         }
 
 
-        // Создание транспонированной матрицы
+        /*---Создание транспонированной матрицы---*/
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
         {
             Matrix transp = new Matrix(N, N);
@@ -159,10 +148,10 @@ namespace MatrixForm
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
-                {    
+                {
                     transp.Mass[i, j] = matrix.Mass[i, j];
-                    
-                    if(i != j)
+
+                    if (i != j)
                         transp.Mass[i, j] = matrix.Mass[j, i];
                 }
             }
@@ -171,7 +160,7 @@ namespace MatrixForm
         }
 
 
-        // Методы по удалению строк и столбцов матрицы (для вычисение определителя)
+        /*---Методы по удалению строк и столбцов матрицы (для вычисение определителя)---*/
         // №1  Основной, содержащий в себе вызовы 2 и 3
         public Matrix DecreaseMatrix(Matrix matrix, int DelRow, int DelColumn)
         {
@@ -212,15 +201,15 @@ namespace MatrixForm
 
             for (int i = 0; i < delColumnMatrix.RowCount; i++)
             {
-                for(int j = DelColumn; j < delColumnMatrix.RowCount; j++)
+                for (int j = DelColumn; j < delColumnMatrix.RowCount; j++)
                     delColumnMatrix.Mass[i, j] = matrix.Mass[i, j + 1];
             }
 
             return delColumnMatrix;
         }
 
-        
-        // Переворот матицы с конца в начало, т.е обратное индексирование
+
+        /*---Переворот матицы с конца в начало, т.е обратное индексирование---*/
         public Matrix ReverseIndexMatrix(Matrix matrix)
         {
             Matrix reverseIndexMatrix = new Matrix(matrix.RowCount, matrix.ColumnCount);
@@ -250,22 +239,23 @@ namespace MatrixForm
         }
 
 
-        // Умножение результата на число, последнее действие в методе обратной матрицы
-        public Matrix MultByNum(Matrix matrix1, double num)
+        /*---Умножение результата на число, последнее действие в методе обратной матрицы---*/
+        public Matrix MultByNum(Matrix matrix1, double det)
         {
             Matrix resultMatrix = matrix1;
+            double firstAction = 1 / det;
 
             for (int i = 0; i < matrix1.RowCount; i++)
             {
                 for (int j = 0; j < matrix1.ColumnCount; j++)
-                    resultMatrix.Mass[i, j] *= num;
+                    resultMatrix.Mass[i, j] *= firstAction;
             }
-
             return resultMatrix;
+
         }
 
 
-        // Метод для округления результа
+        /*---Метод для округления результа---*/
         public Matrix NumberRoundingMatrix(Matrix matrix)
         {
             for (int i = 0; i < matrix.RowCount; i++)
@@ -279,5 +269,31 @@ namespace MatrixForm
 
         }
 
+
+
+        /*-------------------------МЕТОДЫ ПРОВЕРКИ НЕКОГО РЕЗУЛЬТАТА---------------------------*/
+
+
+        // Проверка равенства строк и столбцов матрицы для метода обратной матрицы
+        private void CheckColumnAndRowEquality(Matrix matrix1)
+        {
+            if (matrix1.ColumnCount != matrix1.RowCount)
+            {
+                ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
+                return;
+            }
+         }
+
+
+        //Если матрица еденичная, то выводим еденицу деленную на единственное число в матрице
+        public void IsIdentityMatrix(Matrix matrix1, double det)
+        {
+            if (matrix1.ColumnCount == 1 && matrix1.RowCount == 1)
+            {
+                matrix1.Mass[0, 0] = 1 / matrix1.Mass[0, 0];
+                det = 1;
+                NotifResult.Invoke(matrix1);
+            }
+        }
     }
 }
