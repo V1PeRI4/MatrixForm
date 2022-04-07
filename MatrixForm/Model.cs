@@ -11,9 +11,10 @@ namespace MatrixForm
         public event ResultDelegate NotifResult;
 
 
-        /// <summary>
-        /// Умножение матриц
-        /// </summary>
+        /*-------------------------ОСНОВНЫЕ МЕТОДЫ---------------------------*/
+
+
+        // Метод умножения двух матриц
         public void MultMatrix(Matrix matrix1, Matrix matrix2)
         {
             Matrix resultMatrix = new Matrix(matrix1.RowCount, matrix2.ColumnCount);
@@ -38,29 +39,28 @@ namespace MatrixForm
         }
 
 
-        /// <summary>
-        /// Нахождение обратной матрицы
-        /// </summary>
+        // Метод вычисления обратной матрицы
         public void ReverseMatrix(Matrix matrix1)
         {
-
             if (matrix1.ColumnCount != matrix1.RowCount)
+            {
                 ModelMsgEvent.Invoke("Количество столбцов не равно количеству строк");
-
+                return;
+            }
+            
             int N = matrix1.ColumnCount;
-
             float det = 0;
+
             det = CalculateDeterminant(matrix1, N, det);
+
+            IsIdentityMatrix(matrix1, ref det);
 
             if (det == 0)
                 ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
 
             matrix1 = AlliedMatrix(matrix1, N, det); 
-
             matrix1 = CreateTransposeMatrix(matrix1, N);
-
             float firstAction = 1 / det;
-
             matrix1 = MultByNum(matrix1, firstAction);
 
             NotifResult.Invoke(matrix1);
@@ -68,9 +68,24 @@ namespace MatrixForm
 
 
 
+        /*-------------------------ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ДЛЯ ОБРАТНОЙ МАТРИЦЫ---------------------------*/
+
+
+        //Если матрица еденичная, то выводим еденицу деленную на единственное число в матрице
+        public void IsIdentityMatrix(Matrix matrix1, ref float det)
+        {
+            if (matrix1.ColumnCount == 1 && matrix1.RowCount == 1)
+            {
+                matrix1.Mass[0, 0] = 1 / matrix1.Mass[0, 0];
+                det = 1;
+                NotifResult.Invoke(matrix1);
+            }
+        }
+
+
+        //Вычисление опеределителя матрицы
         public float CalculateDeterminant(Matrix matrix1, int N, float determinant)
         {
-
             if (N != 2)
             {
                 for (int i = 0; i < N; i++)
@@ -81,10 +96,13 @@ namespace MatrixForm
             }
             else if (N == 2)
                 determinant = matrix1.Mass[0, 0] * matrix1.Mass[1, 1] - matrix1.Mass[1, 0] * matrix1.Mass[0, 1];
-
+            else if (N == 1)
+                determinant = 1;
             return (determinant);
         }
 
+
+        // Нахождение союзной матрицы
         public Matrix AlliedMatrix(Matrix matrix1, int N, float det)
         {
             float algebraicAdd = 0;
@@ -118,31 +136,19 @@ namespace MatrixForm
                         if (tempMatrix.Mass[i, j] != 0)
                             if ((i + j) % 2 == 0) alliedMatrix.Mass[i, j] += reverseIndexMatrix.Mass[i, j];
                             else alliedMatrix.Mass[i, j] -= reverseIndexMatrix.Mass[i, j];
+                        else alliedMatrix.Mass[i, j] = 0;
                     }
                 }
-
             }
 
             return alliedMatrix;
         }
 
-        public Matrix MultByNum(Matrix matrix1, float num)
-        {
-            Matrix resultMatrix = matrix1;
 
-            for (int i = 0; i < matrix1.RowCount; i++)
-            {
-                for (int j = 0; j < matrix1.ColumnCount; j++)
-                    resultMatrix.Mass[i, j] *= num;
-            }
-
-            return resultMatrix;
-        }
-
+        // Создание транспонированной матрицы
         public Matrix CreateTransposeMatrix(Matrix matrix, int N)
         {
             Matrix transp = new Matrix(N, N);
-
 
             for (int i = 0; i < N; i++)
             {
@@ -159,6 +165,16 @@ namespace MatrixForm
         }
 
 
+        // Методы по удалению строк и столбцов матрицы (для вычисение определителя)
+        // №1  Основной, содержащий в себе вызовы 2 и 3
+        public Matrix DecreaseMatrix(Matrix matrix, int DelRow, int DelColumn)
+        {
+            Matrix decreaseMatrix = matrix;
+            decreaseMatrix = DelRowMatrix(ref decreaseMatrix, DelRow);
+            decreaseMatrix = DelColumnMatrix(ref decreaseMatrix, DelColumn);
+            return decreaseMatrix;
+        }
+        // №2
         public Matrix DelRowMatrix(ref Matrix matrix, int DelRow)
         {
             Matrix delRowMatrix = new Matrix(matrix.RowCount - 1, matrix.ColumnCount);
@@ -177,8 +193,7 @@ namespace MatrixForm
 
             return delRowMatrix;
         }
-
-
+        // №3
         public Matrix DelColumnMatrix(ref Matrix matrix, int DelColumn)
         {
             Matrix delColumnMatrix = new Matrix(matrix.RowCount - 1, matrix.ColumnCount);
@@ -198,20 +213,12 @@ namespace MatrixForm
             return delColumnMatrix;
         }
 
-        public Matrix DecreaseMatrix(Matrix matrix, int DelRow, int DelColumn)
-        {
-            Matrix decreaseMatrix = matrix;
-            decreaseMatrix = DelRowMatrix(ref decreaseMatrix, DelRow);
-            decreaseMatrix = DelColumnMatrix(ref decreaseMatrix, DelColumn);
-            return decreaseMatrix;
-
-        }
-
+        
+        // Переворот матицы с конца в начало, т.е обратное индексирование
         public Matrix ReverseIndexMatrix(Matrix matrix)
         {
             Matrix reverseIndexMatrix = new Matrix(matrix.RowCount, matrix.ColumnCount);
             int tempNum = 0;
-            float  g;
 
             List<float> tempList = new List<float>();
 
@@ -220,8 +227,6 @@ namespace MatrixForm
                 for (int j = 0; j < matrix.ColumnCount; j++)
                 {
                     tempList.Add(matrix.Mass[i, j]);
-
-                    g = tempList[0];
                 }
             }
 
@@ -239,7 +244,19 @@ namespace MatrixForm
         }
 
 
+        // Умножение результата на число, последнее действие в методе обратной матрицы
+        public Matrix MultByNum(Matrix matrix1, float num)
+        {
+            Matrix resultMatrix = matrix1;
 
+            for (int i = 0; i < matrix1.RowCount; i++)
+            {
+                for (int j = 0; j < matrix1.ColumnCount; j++)
+                    resultMatrix.Mass[i, j] *= num;
+            }
+
+            return resultMatrix;
+        }
 
     }
 }

@@ -132,6 +132,7 @@ namespace MatrixForm
         {
             FillMatrix(_matrix, dataGridView1);
 
+            SetColumnRowDataGrid(dataGridView3, _matrixRows, _matrixColumns);
             dataGridView3.Visible = true;
             label4.Visible = true;
 
@@ -156,6 +157,9 @@ namespace MatrixForm
         //Заполнение DataGridView массивом
         private void FillDataGridView(Matrix matrix)
         {
+            int temp = matrix.Mass.GetLength(0); ;
+            int temp2 = matrix.Mass.GetLength(1);
+
             for (int i = 0; i < matrix.Mass.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
