@@ -173,7 +173,7 @@ namespace MatrixForm
         //Заполнение DataGridView массивом
         private void FillDataGridView(Matrix matrix)
         {
-            int temp = matrix.Mass.GetLength(0); ;
+            int temp = matrix.Mass.GetLength(0); 
             int temp2 = matrix.Mass.GetLength(1);
 
             for (int i = 0; i < matrix.Mass.GetLength(0); i++)
