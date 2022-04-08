@@ -267,7 +267,7 @@ namespace MatrixForm
         }
 
         //Метод для обьявления размера матрицы. Возвращает булево _safe
-        //Проблемный метод. Too bad
+        //Проблемный метод. Too bad!
         private void CheckInitMatrixSize(TextBox textBox, ref int value)
         {
             try
