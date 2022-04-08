@@ -9,6 +9,7 @@
  Решить проблему с вводом дробных чисел в textbox +
  Решить проблему с вводом нуля в textbox +
  Дописать кнопку для вычисления обратной матрицы +
+ Проверку на числа для кнопки обратной матрицы
 
  */
 
@@ -76,7 +77,7 @@ namespace MatrixForm
                 }
                 else
                 {
-                    FillLabelWithBorders();
+                    FillLabelWithError();
                 }
             }
             else
@@ -105,7 +106,7 @@ namespace MatrixForm
                 }
                 else
                 {
-                    FillLabelWithBorders();
+                    FillLabelWithError();
                 }
             }
             else
@@ -186,7 +187,7 @@ namespace MatrixForm
             }
         }
 
-        private void FillLabelWithBorders()
+        private void FillLabelWithError()
         {
             label3.Text = "Нельзя создать матрицу больше чем 6х6";
         }
