@@ -8,7 +8,7 @@
  Пофиксить баг с ошибкой со второй матрицей +
  Решить проблему с вводом дробных чисел в textbox +
  Решить проблему с вводом нуля в textbox +
- Дописать кнопку для вычисления обратной матрицы
+ Дописать кнопку для вычисления обратной матрицы +
 
  */
 
@@ -141,6 +141,8 @@ namespace MatrixForm
             FillMatrix(_matrix, dataGridView1);
 
             SetColumnRowDataGrid(dataGridView3, _matrixRows, _matrixColumns);
+            InitFullGridView(dataGridView3);
+
             dataGridView3.Visible = true;
             label4.Visible = true;
 
