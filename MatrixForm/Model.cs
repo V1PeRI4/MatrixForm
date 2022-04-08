@@ -2,6 +2,9 @@
 
 матрица 4 на 4 и больше обратная.
 возможно сделать остальные действия с матрицами.
+
+
+где-то небольшая ошибка в вычислениях 4 на4 матрицы обратной хер его знает
  */
 
 using System.Collections.Generic;
@@ -53,15 +56,12 @@ namespace MatrixForm
         /*---Метод для вычисления обратной матрицы---*/
         public void ReverseMatrix(Matrix matrix1)
         {
-            bool working= true; // Для условия
+            bool working= false; // Для условия остановки работы 
             double det = 0;
             det = CalculateDeterminant(matrix1, matrix1.ColumnCount, det); // Вычисление определителя матрицы
 
-            CheckAllError(matrix1, det, working); // Проверка условий существования обратной матрицы
+            CheckAllError(matrix1, det, ref working); // Проверка условий существования обратной матрицы
             if (working)
-                return;
-
-            else
             {
                 matrix1 = AlliedMatrix(matrix1, matrix1.ColumnCount, det); // Союзная матрица
                 matrix1 = CreateTransposeMatrix(matrix1, matrix1.ColumnCount); // Транспонирование матрицы
@@ -70,6 +70,7 @@ namespace MatrixForm
 
                 NotifResult.Invoke(matrix1);
             }
+            else return;
 
         }
 
@@ -85,7 +86,7 @@ namespace MatrixForm
             {
                 for (int j = 0; j < N; j++)
                 {
-                    if (j % 2 == 0) determinant += matrix1.Mass[0, j] * CalculateDeterminant(DecreaseMatrix(matrix1, 0, j), N - 1, determinant);
+                    if (j % 2 == 0) determinant += matrix1.Mass[0, j] * CalculateDeterminant(DecreaseMatrix(matrix1, 0, j), N - 1, determinant); 
                     else determinant -= matrix1.Mass[0, j] * CalculateDeterminant(DecreaseMatrix(matrix1, 0, j), N - 1, determinant);
                 }
             }
@@ -269,23 +270,23 @@ namespace MatrixForm
 
 
         /*---Обьединение всех условий работы---*/
-        private void CheckAllError(Matrix matrix1, double det, bool working)
+        private void CheckAllError(Matrix matrix1, double det, ref bool working)
         {
             if (CheckColumnAndRowEquality(matrix1)) // Cтолбцы не равны
-                ModelMsgEvent.Invoke("Столбцы не равны");
+                ModelMsgEvent.Invoke("Количество столбцов и строк равны");
 
             else if (IsIdentityMatrix(matrix1)) // Если матрица еденичная
             {
                 int one = 1;
                 matrix1.Mass[0, 0] = one / matrix1.Mass[0, 0];
                 NotifResult.Invoke(matrix1);
-                ModelMsgEvent.Invoke("Еденичная матрица");
+                ModelMsgEvent.Invoke("Это еденичная матрица");
             }
             else if (det == 0) // Проверка на нулевой определитель
                 ModelMsgEvent.Invoke("Определитель - ноль. Обратной матрицы не существует");
             else
             {
-                working = false;
+                working = true;
                 return;
             }
         }
