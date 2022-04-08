@@ -3,9 +3,10 @@
  Реализация MVC +
  Перенести SetDataGridViewSize в другое место +
  Сделать TextAlign В DGV +
- Ограничить DGV до 6х6
- Дописать кнопки
- Пофиксить баг с ошибкой со второй матрицей 
+ Ограничить DGV до 6х6 +
+ Дописать кнопки +
+ Пофиксить баг с ошибкой со второй матрицей +
+ Решить проблему в вводом дробных чисел
 
 Доделать метод вычисление обратной матрицы - выдает нули
  */
@@ -33,6 +34,7 @@ namespace MatrixForm
         private int _matrix2Columns, _matrix2Rows;
         private bool _safe;
         private bool _matrix2Created = false; 
+
         public Form1()
         {
             InitializeComponent();
@@ -52,7 +54,6 @@ namespace MatrixForm
         {
             if (_safe && initColumnsTextBox.Text != "" && initRowsTextBox.Text != "")
             {
-
                 //Проверяет введенный текст на ограничение по размеру
                 if (Convert.ToInt32(initColumnsTextBox.Text) <= 6 && Convert.ToInt32(initRowsTextBox.Text) <= 6)
                 {
@@ -149,7 +150,14 @@ namespace MatrixForm
             {
                 for (int i = 0; i < matrix.Mass.GetLength(1); i++)
                 {
-                    matrix.Mass[j, i] = Convert.ToInt32(dataGridView[i, j].Value); //изменил индексацию датагрида, тк изначально считывает неправильно
+                    try
+                    {
+                        matrix.Mass[j, i] = (float)Convert.ToDouble(dataGridView[i, j].Value); //индексация массива происходит по j, i, а не по i, j
+                    }
+                    catch (FormatException)
+                    {
+                        label3.Text = "Неправильный ввод данных; Дробные числа вводятся через запятую";
+                    }
                 }
             }
         }
@@ -164,7 +172,7 @@ namespace MatrixForm
             {
                 for (int j = 0; j < matrix.Mass.GetLength(1); j++)
                 {
-                    dataGridView3[i, j].Value = matrix.Mass[j, i];   //изменил индексацию датагрида, тк изначально считывает неправильно
+                    dataGridView3[i, j].Value = matrix.Mass[j, i];
                 }
             }
         }
