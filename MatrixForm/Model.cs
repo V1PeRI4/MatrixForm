@@ -10,7 +10,6 @@ namespace MatrixForm
 {
     public class Model
     {
-
         /*-------------------------ДЕЛЕГАТЫ---------------------------*/
 
 
@@ -81,7 +80,15 @@ namespace MatrixForm
         /*---Вычисление опеределителя матрицы---*/
         public double CalculateDeterminant(Matrix matrix1, int N, double determinant)
         {
-            if (N != 2)
+            if (N > 3)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    if (j % 2 == 0) determinant += matrix1.Mass[0, j] * CalculateDeterminant(DecreaseMatrix(matrix1, 0, j), N - 1, determinant);
+                    else determinant -= matrix1.Mass[0, j] * CalculateDeterminant(DecreaseMatrix(matrix1, 0, j), N - 1, determinant);
+                }
+            }
+            else if (N == 3)
             {
                 for (int j = 0; j < N; j++)
                 {
