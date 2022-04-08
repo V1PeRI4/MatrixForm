@@ -79,8 +79,10 @@
             this.dataGridView1.Size = new System.Drawing.Size(328, 194);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Visible = false;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView1_KeyPress);
             // 
             // Column1
             // 
@@ -155,6 +157,7 @@
             this.dataGridViewTextBoxColumn6});
             this.dataGridView3.Location = new System.Drawing.Point(462, 235);
             this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView3.Size = new System.Drawing.Size(326, 203);
@@ -165,16 +168,19 @@
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "Column1";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.HeaderText = "Column2";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.HeaderText = "Column3";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
             // matrixInverseButton
             // 
@@ -208,6 +214,7 @@
             this.initColumnsTextBox.Size = new System.Drawing.Size(75, 20);
             this.initColumnsTextBox.TabIndex = 5;
             this.initColumnsTextBox.TextChanged += new System.EventHandler(this.initColumnsTextBox_TextChanged);
+            this.initColumnsTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.initColumnsTextBox_KeyPress);
             // 
             // initRowsTextBox
             // 
@@ -217,6 +224,7 @@
             this.initRowsTextBox.Size = new System.Drawing.Size(75, 20);
             this.initRowsTextBox.TabIndex = 6;
             this.initRowsTextBox.TextChanged += new System.EventHandler(this.initRowsTextBox_TextChanged);
+            this.initRowsTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.initColumnsTextBox_KeyPress);
             // 
             // button3
             // 
@@ -279,6 +287,7 @@
             this.initRows2TextBox.Size = new System.Drawing.Size(75, 20);
             this.initRows2TextBox.TabIndex = 14;
             this.initRows2TextBox.TextChanged += new System.EventHandler(this.initRows2TextBox_TextChanged);
+            this.initRows2TextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.initColumnsTextBox_KeyPress);
             // 
             // initColumns2TextBox
             // 
@@ -288,6 +297,7 @@
             this.initColumns2TextBox.Size = new System.Drawing.Size(75, 20);
             this.initColumns2TextBox.TabIndex = 13;
             this.initColumns2TextBox.TextChanged += new System.EventHandler(this.initColumns2TextBox_TextChanged);
+            this.initColumns2TextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.initColumnsTextBox_KeyPress);
             // 
             // createSecondMatrixTextBox
             // 
