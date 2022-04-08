@@ -6,9 +6,16 @@
  Ограничить DGV до 6х6 +
  Дописать кнопки +
  Пофиксить баг с ошибкой со второй матрицей +
- Решить проблему в вводом дробных чисел
+ Решить проблему с вводом дробных чисел в textbox +
+ Решить проблему с вводом нуля в textbox +
+ Дописать кнопку для вычисления обратной матрицы
 
 Доделать метод вычисление обратной матрицы - выдает нули
+ */
+
+/*
+ Жизненный цикл ввода чисел в TextBox
+    TextBox ->  KeyPress    ->  InitMatrixSize
  */
 
 using System;
@@ -32,7 +39,6 @@ namespace MatrixForm
 
         private int _matrixColumns, _matrixRows;
         private int _matrix2Columns, _matrix2Rows;
-        private bool _safe;
         private bool _matrix2Created = false; 
 
         public Form1()
@@ -52,7 +58,8 @@ namespace MatrixForm
         //Кнопка "Создать"
         private void button3_Click(object sender, EventArgs e)
         {
-            if (_safe && initColumnsTextBox.Text != "" && initRowsTextBox.Text != "")
+            if (initColumnsTextBox.Text != "" && initRowsTextBox.Text != ""
+                && initColumnsTextBox.Text != "0" && initRowsTextBox.Text != "0")
             {
                 //Проверяет введенный текст на ограничение по размеру
                 if (Convert.ToInt32(initColumnsTextBox.Text) <= 6 && Convert.ToInt32(initRowsTextBox.Text) <= 6)
@@ -82,7 +89,8 @@ namespace MatrixForm
         //Кнопка "Создать" для второй матрицы
         private void createSecondMatrixTextBox_Click(object sender, EventArgs e)
         {
-            if (_safe && initColumns2TextBox.Text != "" && initRows2TextBox.Text != "")
+            if (initColumns2TextBox.Text != "" && initRows2TextBox.Text != ""
+                && initColumns2TextBox.Text != "0" && initRows2TextBox.Text != "0")
             {
                 if (Convert.ToInt32(initColumns2TextBox.Text) <= 6 && Convert.ToInt32(initRows2TextBox.Text) <= 6)
                 {
@@ -240,39 +248,33 @@ namespace MatrixForm
 
         private void initColumnsTextBox_TextChanged(object sender, EventArgs e)
         {
-            InitMatrixSize(initColumnsTextBox, ref _matrixColumns);
+            CheckInitMatrixSize(initColumnsTextBox, ref _matrixColumns);
         }
 
         private void initRowsTextBox_TextChanged(object sender, EventArgs e)
         {
-            InitMatrixSize(initRowsTextBox, ref _matrixRows);
+            CheckInitMatrixSize(initRowsTextBox, ref _matrixRows);
         }
 
         private void initColumns2TextBox_TextChanged(object sender, EventArgs e)
         {
-            InitMatrixSize(initColumns2TextBox, ref _matrix2Columns);
+            CheckInitMatrixSize(initColumns2TextBox, ref _matrix2Columns);
         }
 
         private void initRows2TextBox_TextChanged(object sender, EventArgs e)
         {
-            InitMatrixSize(initRows2TextBox, ref _matrix2Rows);
+            CheckInitMatrixSize(initRows2TextBox, ref _matrix2Rows);
         }
 
         //Метод для обьявления размера матрицы. Возвращает булево _safe
-        private bool InitMatrixSize(TextBox textBox, ref int value)
+        //Проблемный метод. Too bad
+        private void CheckInitMatrixSize(TextBox textBox, ref int value)
         {
-            _safe = true;
-
             try
             {
                 value = int.Parse(textBox.Text);
             }
-            catch (FormatException)
-            {
-                _safe = false;
-            }
-
-            return _safe;
+            catch (FormatException) { }
         }
 
         /*------------------------БЛОК ДЛЯ ДЕЛЕГАТОВ-------------------------*/
@@ -281,16 +283,35 @@ namespace MatrixForm
             label3.Text = message;
         }
 
+        private void initColumnsTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && !(number == '\b'))
+            {
+                e.Handled = true;
+            }
+        }
+
         /*------------------------МЕСТО ДЛЯ МУСОРА-------------------------*/
         private void label3_Click(object sender, EventArgs e)
         {
         }
+
+        private void dataGridView1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+        }
+
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-/*            if ((sender as DataGridView).Rows.Count > 0)
-            {
-                SetDataGridViewSize(sender as DataGridView);
-            }*/
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
